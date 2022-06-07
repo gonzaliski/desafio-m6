@@ -1,6 +1,9 @@
 type Play = "piedra" | "papel" | "tijera";
+const API_BASE_URL = "http://localhost:3000"
 const state = {
   data: {
+    name:"",
+    userId:"",
     playerPlay: "",
     comPlay: "",
     history: {
@@ -9,6 +12,11 @@ const state = {
     },
     hasWon: false,
   },
+  listeners:[],
+  subscribe(callback: (any) => any) {
+    // recibe callbacks para ser avisados posteriormente
+    this.listeners.push(callback);
+ },
   init() {
 		const localData = JSON.parse(localStorage.getItem("data"));
     console.log(localData);
@@ -17,6 +25,83 @@ const state = {
 		}
 		console.log(localData);
 	},
+  setName(name:String){
+    const cs = this.getState();
+    console.log(name);
+    cs.name = name;
+    this.setState(cs);
+  },
+  askNewRoom(callback?) {
+    const cs = this.getState();    
+      fetch(API_BASE_URL + "/rooms", {
+        method: "post",
+        headers: {
+          "Accept": "application/json",
+          "content-type": "application/json",
+        }
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log("line 33 ",data.id);
+          cs.roomId = data.id;
+          this.setState(cs);
+          if (callback) {
+            callback();
+          }
+        });
+  },
+  setRoomId(roomId:string){
+    const cs = this.getState();
+    cs.roomId = roomId
+    this.setState(cs);
+  },
+  signIn(callback) {
+    const cs = this.getState();
+    if (cs.name) {
+      fetch(API_BASE_URL + "/auth", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ name: cs.name }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          cs.userId = data.id;
+          this.setState(cs);
+          callback();
+        });
+    } else {
+      console.error("No hay nombre en el state");
+      callback(true);
+    }
+  },
+  accessToRoom(callback?){
+    console.log("accessToRoom");
+    const cs = this.getState();
+    const roomId = cs.roomId;
+    const userId = cs.userId;
+    console.log(userId);
+    console.log(roomId);
+    
+    fetch(API_BASE_URL + "/rooms/" + roomId + "/?userId=" + userId)
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        cs.rtdbRoomId = data.rtdbRoomId;
+        this.setState(cs);
+      //  this.listenRoom();
+        if (callback) {
+          callback();
+        }
+      });
+  },
 
   getState() {
     return this.data;
@@ -46,7 +131,10 @@ const state = {
   setState(newState) {
     // modifica this.data (el state) e invoca los callbacks
     this.data = newState;
-  
+    for (const cb of this.listeners) {
+      cb();
+  }
+
   },
   savePlayerPlay(play: Play) {
 
