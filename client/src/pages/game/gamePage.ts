@@ -1,14 +1,21 @@
-import "../../root"
-import {state} from "../../state"
-export function initPage(params){
-    state.saveParams(params); 
-
-    const div = document.createElement("div");
-    div.innerHTML = `
+import {Router} from "@vaadin/router"
+import { state } from "../../state";
+customElements.define('game-page', class GamePage extends HTMLElement {
+  connectedCallback(){
+    this.render()
+  }
+  addListeners(){
+    const playerOption = this.querySelector(".options")
+    playerOption.addEventListener("click",()=>{
+      Router.go("/showHands")
+    })
+  }
+  render(){
+    this.innerHTML = `
         <countdown-el seconds="3" class="countdown-game"></countdown-el>
         <play-options class="options"></play-options>
     `;
-    div.className = "title_container"
+    this.className = "title_container"
     const style = document.createElement("style");
     style.innerHTML=`
       .title_container{
@@ -24,11 +31,13 @@ export function initPage(params){
         bottom:0px;
       }
     `
-    const playerOption = div.querySelector(".options")
-    playerOption.addEventListener("click",()=>{
-      params.goTo("/showHands")
-    })
     
-    div.appendChild(style);
-    return div
-}
+    
+    this.appendChild(style);
+
+  }
+
+})
+    
+
+

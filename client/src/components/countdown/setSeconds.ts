@@ -1,4 +1,4 @@
-import "../../pages/game";
+import "../../pages/game/gamePage";
 import {state} from "../../state"
 export function setSeconds(container) {
   let getSeconds = container.getAttribute("seconds");

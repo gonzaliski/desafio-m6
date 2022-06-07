@@ -21,7 +21,7 @@ customElements.define('set-name-page', class setName extends HTMLElement {
     Tijera</h1>
     <form class="form" id="form">
     <h2 class="form-title">Tu nombre</h2>
-    <input class="name__input" name="name__input" type="text"></input>
+    <input required class="name__input" name="name__input" type="text"></input>
     <play-button class="button-play" id="send-button">Empezar</play-button>
     </form>
     <play-options class="options"></play-options>
@@ -65,6 +65,7 @@ customElements.define('set-name-page', class setName extends HTMLElement {
       .form-title{
           font-size:45px;
       }
+
     `
     this.appendChild(style)
     this.addListeners();

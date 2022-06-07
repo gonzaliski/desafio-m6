@@ -1,6 +1,6 @@
 import {Router} from "@vaadin/router"
 import { state } from "../../state";
-customElements.define('welcome-page', class welcomePage extends HTMLElement {
+customElements.define('welcome-page', class WelcomePage extends HTMLElement {
   connectedCallback() {
     this.render();
   }

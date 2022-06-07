@@ -1,6 +1,6 @@
 import {Router} from "@vaadin/router"
 import { state } from "../../state";
-customElements.define('room-info-page', class roomInfo extends HTMLElement {
+customElements.define('room-info-page', class RoomInfo extends HTMLElement {
   connectedCallback() {
     this.render();
   }
@@ -10,6 +10,10 @@ customElements.define('room-info-page', class roomInfo extends HTMLElement {
         if(cs.IsRoomFull){
             Router.go("/instructions")
         }
+      })
+      const testEl = this.querySelector(".test-button")
+      testEl.addEventListener("click",()=>{
+        Router.go("/instructions")
       })
   }
 
@@ -31,8 +35,10 @@ customElements.define('room-info-page', class roomInfo extends HTMLElement {
     <h4 class="room-id__title">AAAA</h4>
     <p> con tu contrincante</p>
     </div>
-
+    <button class="test-button">test</button>
+    <div class="options__container">
     <play-options class="options"></play-options>
+    </div>
     `
     this.className = "title_container"
     const style = document.createElement("style");
@@ -73,6 +79,10 @@ customElements.define('room-info-page', class roomInfo extends HTMLElement {
       .room-id__title{
           margin:0;
           font-size:45px;
+      }
+      .options__container{
+        display:flex;
+        justify-content:center;
       }
     `
     this.appendChild(style)
