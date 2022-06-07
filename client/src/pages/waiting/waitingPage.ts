@@ -5,10 +5,10 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
     this.render()
   }
   addListeners(){
-    // const buttonEl = this.querySelector(".button-play");
-    // buttonEl.addEventListener('click',()=>{
-    //     Router.go("/game")
-    // });
+    const buttonEl = this.querySelector(".button-play");
+    buttonEl.addEventListener('click',()=>{
+        Router.go("/game")
+    });
   }
   render(){
     this.innerHTML = `
