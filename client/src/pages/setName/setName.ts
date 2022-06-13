@@ -1,6 +1,6 @@
 import {Router} from "@vaadin/router"
 import { state } from "../../state";
-customElements.define('set-name-page', class setName extends HTMLElement {
+customElements.define('set-name-page', class SetName extends HTMLElement {
   connectedCallback() {
     this.render();
   }
@@ -10,6 +10,11 @@ customElements.define('set-name-page', class setName extends HTMLElement {
       e.preventDefault();
       const target = e.target as any;
       state.setName(target["name__input"].value)
+      state.signIn(()=>{
+        state.accessToRoom(()=>{
+          state.connectToRoom();
+        });
+      });
       Router.go("/room-info")
     });
   }

@@ -1,3 +1,4 @@
+import {rtdb} from "./rtdb"
 type Play = "piedra" | "papel" | "tijera";
 const API_BASE_URL = "http://localhost:3000"
 const state = {
@@ -10,6 +11,12 @@ const state = {
       player: 0,
       com: 0,
     },
+    roomId:"",
+    rtdbData:{},
+    rtdbLongId:"",
+    oponentId:"",
+    online:false,
+    ready:false,
     hasWon: false,
   },
   listeners:[],
@@ -18,13 +25,73 @@ const state = {
     this.listeners.push(callback);
  },
   init() {
-		const localData = JSON.parse(localStorage.getItem("data"));
-    console.log(localData);
-		if (localStorage.getItem("data")) {
-			return (this.data.history = localData);
-		}
-		console.log(localData);
+		// const localData = JSON.parse(localStorage.getItem("data"));
+    // console.log(localData);
+		// if (localStorage.getItem("data")) {
+		// 	return (this.data.history = localData);
+		// }
+		// console.log(localData);
 	},
+  listenDatabase() {
+    // Connection with RTDB
+    const rtdbRef = rtdb.ref(`rooms/${this.data.rtdbLongId}`);
+    // const rtdbRef = rtdb.ref(`rooms/${this.data.roomId}`);    
+    rtdbRef.on("value", (snapshot) => {
+      const currentState = this.getState();
+      const value = snapshot.val();
+      currentState.rtdbData = value.currentGame;
+      console.log(currentState.rtdbData);
+      this.setState(currentState);
+    });
+  },
+  signIn(callback) {
+    const cs = this.getState();
+    if (cs.name) {
+      fetch(API_BASE_URL + "/auth", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ name: cs.name }),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          cs.userId = data.id;
+          console.log(cs.userId);
+          this.setState(cs);
+          callback();
+  
+        });
+    } else {
+      console.error("No hay nombre en el state");
+    }
+  },
+  connectToRoom(){
+    const cs = this.getState();
+    const userId = cs.userId;
+    fetch(API_BASE_URL + "/currentGame",{
+      method: "post",
+      headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+      },
+      body:JSON.stringify({
+          userId,
+          choice:"",
+          name:cs.name,
+          online:true,
+          ready:false,
+          roomId:cs.roomId
+        })
+    }).then(res=>{
+      return res.json();
+      })
+      .then(()=>{
+        this.listenDatabase()
+      })
+  },
   setName(name:String){
     const cs = this.getState();
     console.log(name);
@@ -57,36 +124,12 @@ const state = {
     cs.roomId = roomId
     this.setState(cs);
   },
-  signIn(callback) {
-    const cs = this.getState();
-    if (cs.name) {
-      fetch(API_BASE_URL + "/auth", {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ name: cs.name }),
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          console.log(data);
-          cs.userId = data.id;
-          this.setState(cs);
-          callback();
-        });
-    } else {
-      console.error("No hay nombre en el state");
-      callback(true);
-    }
-  },
   accessToRoom(callback?){
     console.log("accessToRoom");
     const cs = this.getState();
     const roomId = cs.roomId;
     const userId = cs.userId;
-    console.log(userId);
+    console.log("userId:",userId);
     console.log(roomId);
     
     fetch(API_BASE_URL + "/rooms/" + roomId + "/?userId=" + userId)
@@ -94,7 +137,9 @@ const state = {
         return res.json();
       })
       .then((data) => {
-        cs.rtdbRoomId = data.rtdbRoomId;
+        cs.rtdbLongId = data.rtdbRoomId;
+        console.log(cs.rtdbLongId);
+        
         this.setState(cs);
       //  this.listenRoom();
         if (callback) {
@@ -105,6 +150,12 @@ const state = {
 
   getState() {
     return this.data;
+  },
+  getOponent(){
+    const oponentData = this.rtdbData.filter((p)=>{p.name != this.data.userId})
+  },
+  isOponentReady(){
+    return this.getOponent().ready
   },
   setComSelection() {
     const comSelection = this.getRandomSelection();

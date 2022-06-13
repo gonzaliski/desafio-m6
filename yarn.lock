@@ -1276,7 +1276,7 @@
 
 "@vaadin/router@^1.7.4":
   version "1.7.4"
-  resolved "https://registry.npmjs.org/@vaadin/router/-/router-1.7.4.tgz"
+  resolved "https://registry.yarnpkg.com/@vaadin/router/-/router-1.7.4.tgz#76d78d0091275cadf1ac18f0e8b75bf0fd6fe253"
   integrity sha512-B4JVtzFVUMlsjuJHNXEMfNZrM4QDrdeOMc6EEigiHYxwF82py6yDdP6SWP0aPoP3f6aQHt51tLWdXSpkKpWf7A==
   dependencies:
     "@vaadin/vaadin-usage-statistics" "^2.1.0"
@@ -1284,12 +1284,12 @@
 
 "@vaadin/vaadin-development-mode-detector@^2.0.0":
   version "2.0.5"
-  resolved "https://registry.npmjs.org/@vaadin/vaadin-development-mode-detector/-/vaadin-development-mode-detector-2.0.5.tgz"
+  resolved "https://registry.yarnpkg.com/@vaadin/vaadin-development-mode-detector/-/vaadin-development-mode-detector-2.0.5.tgz#5098216dae30d8eeabe46c7cbe494a352fe09691"
   integrity sha512-miirBQw10UHjKwRv29iZniXCo41cLg3wFotoyTeUZ2PTGIDk/fZVFr4Q4WVKZrp3D15878vz94nNQROSmPLjdg==
 
 "@vaadin/vaadin-usage-statistics@^2.1.0":
   version "2.1.2"
-  resolved "https://registry.npmjs.org/@vaadin/vaadin-usage-statistics/-/vaadin-usage-statistics-2.1.2.tgz"
+  resolved "https://registry.yarnpkg.com/@vaadin/vaadin-usage-statistics/-/vaadin-usage-statistics-2.1.2.tgz#a0a211b298e647742b60c6d4d1d8834381e3c77f"
   integrity sha512-xKs1PvRfTXsG0eWWcImLXWjv7D+f1vfoIvovppv6pZ5QX8xgcxWUdNgERlOOdGt3CTuxQXukTBW3+Qfva+OXSg==
   dependencies:
     "@vaadin/vaadin-development-mode-detector" "^2.0.0"
@@ -3490,7 +3490,7 @@ path-to-regexp@0.1.7:
 
 path-to-regexp@2.4.0:
   version "2.4.0"
-  resolved "https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-2.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-2.4.0.tgz#35ce7f333d5616f1c1e1bfe266c3aba2e5b2e704"
   integrity sha512-G6zHoVqC6GGTQkZwF4lkuEyMbVOjoBKAEybQUypI1WTkqinCOrq2x6U2+phkJ1XsEMTy4LjtwPI7HW+NVrRR2w==
 
 path-type@^4.0.0:

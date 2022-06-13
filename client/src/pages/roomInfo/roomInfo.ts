@@ -1,7 +1,12 @@
 import {Router} from "@vaadin/router"
 import { state } from "../../state";
 customElements.define('room-info-page', class RoomInfo extends HTMLElement {
+  roomId: Number;
+  localPlayerName:String;
   connectedCallback() {
+    const cs = state.getState()
+    this.roomId = cs.roomId
+    this.localPlayerName = cs.name
     this.render();
   }
   addListeners(){
@@ -21,18 +26,18 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     this.innerHTML=`
     <div class="header__container">
     <div class="players-stats__box">
-    <p class="player">Jugador 1</p>
+    <p class="player">${this.localPlayerName}</p>
     <p class="player two">Jugador 2</p>
     </div>
     <div>
     <h4>Sala</h4>
-    <p>AAAAA</p>
+    <p>${this.roomId}</p>
     </div>
     </div>
     <div class="info__container">
 
     <p> Compartí el código</p>
-    <h4 class="room-id__title">AAAA</h4>
+    <h4 class="room-id__title">${this.roomId}</h4>
     <p> con tu contrincante</p>
     </div>
     <button class="test-button">test</button>
