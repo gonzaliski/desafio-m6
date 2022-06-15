@@ -7,12 +7,13 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
   addListeners(){
     const newRoomEl = this.querySelector("#new-room");
     newRoomEl.addEventListener('click',()=>{
-      state.askNewRoom(() => {});
+      state.askNewRoom(()=>{
+        state.setPlayerDataOnRoom()
+      });
       Router.go("/setName")
     });
     const joinRoomEl = this.querySelector("#join-room");
     joinRoomEl.addEventListener('click',()=>{
-      state.askNewRoom(() => {});
       Router.go("/connectRoom")
     });
   }

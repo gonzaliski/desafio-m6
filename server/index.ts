@@ -25,7 +25,7 @@ app.post("/rooms",(req,res)=>{
         const roomLongId = roomRef.key;
         const roomId = nanoidShort(6);
         roomCollection.doc(roomId.toString()).set({
-          rtdbRoomId:roomLongId,
+          rtdbRoomId:roomLongId
         }).then(()=>{
           res.json({
             id:roomId.toString(),
@@ -35,23 +35,27 @@ app.post("/rooms",(req,res)=>{
       })
   })
 
-  app.post("/currentGame", (req,res)=>{
+  app.post("/roomData", (req,res)=>{
 
+   const userId = req.body.userId
    const roomId = req.body.roomId 
     roomCollection.doc(roomId).get()
     .then(snap=>{
       const rtdbId = snap.data();
        const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame");
-
-       gameRoomRef.set({
-        [req.body.userId]:{
+       gameRoomRef.child(userId.toString()).set(
+        {
           choice:req.body.choice,
           name:req.body.name,
           online:req.body.online,
           ready:req.body.ready,
-        }
-       },
-        () => res.json("todo ok"));
+        },()=>{res.json("ok")})
+        // .then(function() {
+        //   console.log('Synchronization succeeded');
+        // })
+        // .catch(function(error) {
+        //   console.log('Synchronization failed');
+        // });
     })
   })
 

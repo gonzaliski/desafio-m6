@@ -12,9 +12,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
   addListeners(){
     const buttonEl = this.querySelector(".button-play");
     buttonEl.addEventListener('click',()=>{
-        const cs = state.getState()
-        cs.ready = true
-        state.setState(cs)
+        state.setReady()
         Router.go("/waiting")
     });
   }

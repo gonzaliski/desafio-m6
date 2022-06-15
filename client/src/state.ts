@@ -1,4 +1,5 @@
 import {rtdb} from "./rtdb"
+import {map} from "lodash"
 type Play = "piedra" | "papel" | "tijera";
 const API_BASE_URL = "http://localhost:3000"
 const state = {
@@ -12,12 +13,14 @@ const state = {
       com: 0,
     },
     roomId:"",
-    rtdbData:{},
+    rtdbData:[],
     rtdbLongId:"",
     oponentId:"",
     online:false,
+    choice:"",
     ready:false,
     hasWon: false,
+    roomOwner:""
   },
   listeners:[],
   subscribe(callback: (any) => any) {
@@ -34,17 +37,22 @@ const state = {
 	},
   listenDatabase() {
     // Connection with RTDB
+    console.log("listening data base");
+    
     const rtdbRef = rtdb.ref(`rooms/${this.data.rtdbLongId}`);
     // const rtdbRef = rtdb.ref(`rooms/${this.data.roomId}`);    
     rtdbRef.on("value", (snapshot) => {
-      const currentState = this.getState();
+      const cs = this.getState();
       const value = snapshot.val();
-      currentState.rtdbData = value.currentGame;
-      console.log(currentState.rtdbData);
-      this.setState(currentState);
+      console.log(value.currentGame);
+      
+      cs.rtdbData = map(value.currentGame)
+      console.log(cs.rtdbData);
+      
+      this.setState(cs);
     });
   },
-  signIn(callback) {
+  signIn(callback?) {
     const cs = this.getState();
     if (cs.name) {
       fetch(API_BASE_URL + "/auth", {
@@ -61,17 +69,19 @@ const state = {
           cs.userId = data.id;
           console.log(cs.userId);
           this.setState(cs);
-          callback();
+          if(callback){
+            callback();
+          }
   
         });
     } else {
       console.error("No hay nombre en el state");
     }
   },
-  connectToRoom(){
+  setPlayerDataOnRoom(){
     const cs = this.getState();
     const userId = cs.userId;
-    fetch(API_BASE_URL + "/currentGame",{
+    fetch(API_BASE_URL + "/roomData",{
       method: "post",
       headers: {
         "Accept": "application/json",
@@ -79,15 +89,15 @@ const state = {
       },
       body:JSON.stringify({
           userId,
-          choice:"",
+          choice:cs.choice,
           name:cs.name,
-          online:true,
-          ready:false,
+          online:cs.online,
+          ready:cs.ready,
           roomId:cs.roomId
         })
-    }).then(res=>{
-      return res.json();
-      })
+    }).then((res)=>{
+      return res.json()
+    })
       .then(()=>{
         this.listenDatabase()
       })
@@ -97,6 +107,11 @@ const state = {
     console.log(name);
     cs.name = name;
     this.setState(cs);
+  },
+  setReady(){
+    const cs = this.getState()
+    cs.ready = true;
+    this.setPlayerDataOnRoom()
   },
   askNewRoom(callback?) {
     const cs = this.getState();    
@@ -152,10 +167,14 @@ const state = {
     return this.data;
   },
   getOponent(){
-    const oponentData = this.rtdbData.filter((p)=>{p.name != this.data.userId})
+    const oponentData = this.data.rtdbData.filter((p)=>{
+      return p.name != this.data.name
+    })
+    console.log(oponentData);
+    return oponentData
   },
   isOponentReady(){
-    return this.getOponent().ready
+    return this.getOponent()[0].ready
   },
   setComSelection() {
     const comSelection = this.getRandomSelection();
