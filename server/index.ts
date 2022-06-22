@@ -42,21 +42,32 @@ app.post("/rooms",(req,res)=>{
     roomCollection.doc(roomId).get()
     .then(snap=>{
       const rtdbId = snap.data();
-       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame");
+       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/gameData");
        gameRoomRef.child(userId.toString()).set(
         {
-          choice:req.body.choice,
           name:req.body.name,
           online:req.body.online,
           ready:req.body.ready,
         },()=>{res.json("ok")})
-        // .then(function() {
-        //   console.log('Synchronization succeeded');
-        // })
-        // .catch(function(error) {
-        //   console.log('Synchronization failed');
-        // });
+
     })
+  })
+  app.post("/playersChoices", (req,res)=>{
+    const name = req.body.name
+    const roomId = req.body.roomId 
+    roomCollection.doc(roomId).get()
+    .then(snap=>{
+      const rtdbId = snap.data();
+       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame");
+       gameRoomRef.child("playersChoices").set(
+        {
+          [name]:{
+            name,
+            choice:req.body.choice
+          }
+        },()=>{res.json("ok")})
+    })
+    
   })
 
 app.get("/rooms/:roomId",(req,res)=>{

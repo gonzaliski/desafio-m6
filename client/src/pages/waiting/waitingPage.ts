@@ -4,20 +4,23 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
   roomId: Number;
   localPlayerName:String;
   connectedCallback(){
-    console.log("aaaa");
-    console.log("eeeee",state.data.rtdbData);
-    
-    state.subscribe(()=>{      
-      console.log(state.isOponentReady());
-      
-      if(state.isOponentReady()){
-        Router.go("/game")
-      }
-     })
     const cs = state.getState()
     this.roomId = cs.roomId
     this.localPlayerName = cs.name
     this.render()
+  }
+  addListeners(){
+    if(state.isOponentReady()){
+      console.log("oponent was already waiting");
+      
+      Router.go("/game")
+    }
+    state.subscribe(()=>{      
+      if(state.isOponentReady()){
+        console.log("oponent is ready");
+        Router.go("/game")
+      }
+     })
   }
 
   render(){
@@ -93,7 +96,7 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
 
 
     this.appendChild(style);
-
+    this.addListeners()
   }
 
 })

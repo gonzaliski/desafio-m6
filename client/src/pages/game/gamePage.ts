@@ -6,8 +6,23 @@ customElements.define('game-page', class GamePage extends HTMLElement {
   }
   addListeners(){
     const playerOption = this.querySelector(".options")
+    // const titleEl = this.querySelector(".title_container")
+    // const waiting = document.createElement("div")
+    // waiting.innerHTML = `
+    // <h1>Esperando a que el oponente juegue</h1>
+    //   `
+    // titleEl.appendChild(waiting)
+
     playerOption.addEventListener("click",()=>{
-      Router.go("/showHands")
+      state.subscribe(()=>{
+        console.log(state.data.play);
+        const oponentPlay = state.data.play.oponentPlay
+        console.log("oponente jugó", oponentPlay);
+        
+        if(oponentPlay != ""){
+          Router.go("/showHands")
+        }
+      })     
     })
   }
   render(){
@@ -34,7 +49,7 @@ customElements.define('game-page', class GamePage extends HTMLElement {
     
     
     this.appendChild(style);
-
+    this.addListeners();
   }
 
 })

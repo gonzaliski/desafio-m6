@@ -17,10 +17,14 @@ const state = {
     rtdbLongId:"",
     oponentId:"",
     online:false,
-    choice:"",
     ready:false,
     hasWon: false,
-    roomOwner:""
+    wins:"",
+    play:{
+      myPlay:"",
+      oponentPlay:""
+    }
+
   },
   listeners:[],
   subscribe(callback: (any) => any) {
@@ -45,10 +49,10 @@ const state = {
       const cs = this.getState();
       const value = snapshot.val();
       console.log(value.currentGame);
-      
-      cs.rtdbData = map(value.currentGame)
-      console.log(cs.rtdbData);
-      
+      cs.rtdbData = map(value.currentGame.gameData)
+      const oponentDataMap = map(value.currentGame.playersChoices).filter((p)=>{return p != this.data.name })
+      const oponentData = oponentDataMap[0] as any;
+      cs.play.oponentPlay = oponentData.choice
       this.setState(cs);
     });
   },
@@ -93,7 +97,8 @@ const state = {
           name:cs.name,
           online:cs.online,
           ready:cs.ready,
-          roomId:cs.roomId
+          roomId:cs.roomId,
+          wins:cs.wins
         })
     }).then((res)=>{
       return res.json()
@@ -108,9 +113,10 @@ const state = {
     cs.name = name;
     this.setState(cs);
   },
-  setReady(){
+  setReady(ready:Boolean){
     const cs = this.getState()
-    cs.ready = true;
+    cs.ready = ready;
+    this.setState(cs)
     this.setPlayerDataOnRoom()
   },
   askNewRoom(callback?) {
@@ -144,15 +150,13 @@ const state = {
     const cs = this.getState();
     const roomId = cs.roomId;
     const userId = cs.userId;
-    console.log("userId:",userId);
-    console.log(roomId);
-    
     fetch(API_BASE_URL + "/rooms/" + roomId + "/?userId=" + userId)
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         cs.rtdbLongId = data.rtdbRoomId;
+        cs.online = true
         console.log(cs.rtdbLongId);
         
         this.setState(cs);
@@ -168,35 +172,25 @@ const state = {
   },
   getOponent(){
     const oponentData = this.data.rtdbData.filter((p)=>{
-      return p.name != this.data.name
+      return [p.name] && (p.name != this.data.name)
     })
     console.log(oponentData);
+    
     return oponentData
   },
   isOponentReady(){
+    console.log(this.getOponent()[0].ready);
+    
     return this.getOponent()[0].ready
   },
-  setComSelection() {
-    const comSelection = this.getRandomSelection();
-
-    const currentState = this.getState();
-    currentState.comPlay = comSelection;
-    this.setState(currentState);
-  },
-  getRandomSelection() {
-    const possiblePlays = ["piedra", "papel", "tijera"].filter((p)=>{return p != state.getPlayerSelection()});
-    const randomSelection =
-      possiblePlays[Math.floor(Math.random() * possiblePlays.length)];
-    return randomSelection;
-  },
-  getComSelection() {
-    return this.getState().comPlay;
+  getOponentSelection():String {
+    console.log("oponente choice",this.getOponent());
+    
+    return this.getOponent()[0].choice;
   },
   getPlayerSelection() {
     const lastState = this.getState();
-
-
-    return lastState.playerPlay;
+    return lastState.choice;
   },
   setState(newState) {
     // modifica this.data (el state) e invoca los callbacks
@@ -206,56 +200,72 @@ const state = {
   }
 
   },
+  setPlayerPlayOnRoom(){
+    const cs = this.getState();
+    fetch(API_BASE_URL + "/playersChoices",{
+      method: "post",
+      headers: {
+        "Accept": "application/json",
+        "content-type": "application/json",
+      },
+      body:JSON.stringify({
+          choice:cs.play.myPlay,
+          name:cs.name,
+          roomId:cs.roomId,
+        })
+    }).then((res)=>{
+      return res.json()
+    })
+      .then(()=>{
+        this.listenDatabase()
+      })
+
+
+  },
   savePlayerPlay(play: Play) {
-
     const currentState = this.getState();
-    
-    currentState.playerPlay = play;
-
-    this.setComSelection();
+    currentState.ready = false;
+    currentState.play.myPlay = play;
     this.setState(currentState);
+    this.setPlayerPlayOnRoom()
+    this.setPlayerDataOnRoom()
   },
-  parameters: {},
-  saveParams(params) {
-    this.parameters = params;
-  },
-  getParams() {
-    return this.parameters;
+  resetPlay(){
+    const currentState = this.getState();
+    currentState.play.myPlay =""
+    currentState.play.oponentPlay =""
+    this.setState(currentState)
   },
   whoWins() {    
-    const playerMove = this.getPlayerSelection();
-    const comMove = this.getComSelection();
-    const ganeConTijera = playerMove == "tijera" && comMove == "papel";
-    const ganeConPapel = playerMove == "papel" && comMove == "piedra";
-    const ganeConPiedra = playerMove == "piedra" && comMove == "tijera";
+    const playerMove = this.play.myPlay;
+    const oponentMove = this.play.oponenPlay;
+    const ganeConTijera = playerMove == "tijera" && oponentMove == "papel";
+    const ganeConPapel = playerMove == "papel" && oponentMove == "piedra";
+    const ganeConPiedra = playerMove == "piedra" && oponentMove == "tijera";
     const gane = [ganeConPapel, ganeConPiedra, ganeConTijera].includes(true);
     this.getState().hasWon = gane;
     this.saveHistory(gane);
-    return gane;
   },
   isDraw(){
-    const playerMove = this.getPlayerSelection();
-    const comMove = this.getComSelection();
-    return playerMove == comMove
+    const playerMove = this.play.myPlay;
+    const oponentMove = this.play.oponenPlay;
+    return playerMove == oponentMove
   },
   lastResult() {
     return this.getState().hasWon;
   },
   saveHistory(result) {
-    const currentHistory = this.getState().history;
-    if (result) {
- 
-      currentHistory.player += 1;
-      console.log("player victoria:",currentHistory.player );
-      
-    } else {
-      
-      currentHistory.com += 1;
-      console.log("com victoria:",currentHistory.com );
-      
-      
+    const cs = this.getState();
+    if(this.isDraw()){
+      cs.wins+=1
     }
-    localStorage.setItem("data", JSON.stringify(currentHistory))
+    else if (!this.isDraw() && result) {
+      cs.wins += 1;
+    }
+
+    this.setPlayerDataOnRoom()
+    this.setState(cs)
+    // localStorage.setItem("data", JSON.stringify(currentHistory))
   },
 };
 
