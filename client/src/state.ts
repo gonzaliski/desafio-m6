@@ -16,10 +16,13 @@ const state = {
     rtdbData:[],
     rtdbLongId:"",
     oponentId:"",
+    choice:"",
     online:false,
     ready:false,
     hasWon: false,
-    wins:"",
+    hasDrawn:false,
+    hasPlayed:false,
+    wins:0,
     play:{
       myPlay:"",
       oponentPlay:""
@@ -50,11 +53,20 @@ const state = {
       const value = snapshot.val();
       console.log(value.currentGame);
       cs.rtdbData = map(value.currentGame.gameData)
-      const oponentDataMap = map(value.currentGame.playersChoices).filter((p)=>{return p != this.data.name })
-      const oponentData = oponentDataMap[0] as any;
-      cs.play.oponentPlay = oponentData.choice
-      this.setState(cs);
+      console.log(cs.rtdbData);
+      this.saveOponentData(value.currentGame)
+        this.setState(cs);
     });
+  },
+  saveOponentData(data){
+    const playerChoices = map(data.playersChoices) as any;
+    const oponentDataMap = playerChoices.filter((p)=>{return p.name != this.data.name })
+    console.log(oponentDataMap);
+    const oponentData = oponentDataMap[0] as any;
+    console.log(oponentData);
+    if(oponentData != undefined){
+      this.data.play.oponentPlay = oponentData.choice
+    }
   },
   signIn(callback?) {
     const cs = this.getState();
@@ -98,13 +110,15 @@ const state = {
           online:cs.online,
           ready:cs.ready,
           roomId:cs.roomId,
-          wins:cs.wins
+          wins:cs.wins,
+          hasPlayed:cs.hasPlayed
         })
     }).then((res)=>{
       return res.json()
     })
       .then(()=>{
         this.listenDatabase()
+
       })
   },
   setName(name:String){
@@ -174,31 +188,20 @@ const state = {
     const oponentData = this.data.rtdbData.filter((p)=>{
       return [p.name] && (p.name != this.data.name)
     })
-    console.log(oponentData);
-    
-    return oponentData
+
+    return oponentData[0]
   },
   isOponentReady(){
-    console.log(this.getOponent()[0].ready);
-    
-    return this.getOponent()[0].ready
-  },
-  getOponentSelection():String {
-    console.log("oponente choice",this.getOponent());
-    
-    return this.getOponent()[0].choice;
-  },
-  getPlayerSelection() {
-    const lastState = this.getState();
-    return lastState.choice;
+    const oponentData = this.getOponent()
+    return oponentData.ready
   },
   setState(newState) {
     // modifica this.data (el state) e invoca los callbacks
     this.data = newState;
-    for (const cb of this.listeners) {
-      cb();
-  }
-
+      for (const cb of this.listeners) {
+        cb();
+      }
+  
   },
   setPlayerPlayOnRoom(){
     const cs = this.getState();
@@ -209,62 +212,69 @@ const state = {
         "content-type": "application/json",
       },
       body:JSON.stringify({
-          choice:cs.play.myPlay,
+          choice:cs.choice,
           name:cs.name,
           roomId:cs.roomId,
-        })
+        })  
     }).then((res)=>{
       return res.json()
     })
       .then(()=>{
         this.listenDatabase()
       })
-
-
   },
   savePlayerPlay(play: Play) {
-    const currentState = this.getState();
-    currentState.ready = false;
-    currentState.play.myPlay = play;
-    this.setState(currentState);
+    this.data.ready = false;
+    this.data.choice = play;
+    this.data.play.myPlay = play;
+    this.setPlayerDataOnRoom()
     this.setPlayerPlayOnRoom()
+  },
+  changeOponentStatus(status:Boolean){
+    this.data.hasPlayed = status
     this.setPlayerDataOnRoom()
   },
   resetPlay(){
-    const currentState = this.getState();
-    currentState.play.myPlay =""
-    currentState.play.oponentPlay =""
-    this.setState(currentState)
+    this.data.play.myPlay =""
+    this.data.play.oponentPlay =""
+    this.data.hasWon=false
+    this.data.hasDrawn=false
+    this.setPlayerDataOnRoom()
+    this.setPlayerPlayOnRoom()
   },
   whoWins() {    
-    const playerMove = this.play.myPlay;
-    const oponentMove = this.play.oponenPlay;
+    const playerMove = this.data.play.myPlay;
+    console.log(playerMove);
+    const oponentMove = this.data.play.oponentPlay;
+    console.log(oponentMove);
     const ganeConTijera = playerMove == "tijera" && oponentMove == "papel";
     const ganeConPapel = playerMove == "papel" && oponentMove == "piedra";
     const ganeConPiedra = playerMove == "piedra" && oponentMove == "tijera";
     const gane = [ganeConPapel, ganeConPiedra, ganeConTijera].includes(true);
-    this.getState().hasWon = gane;
+    console.log("gane?",gane);
+    
     this.saveHistory(gane);
   },
   isDraw(){
-    const playerMove = this.play.myPlay;
-    const oponentMove = this.play.oponenPlay;
+    const playerMove = this.data.play.myPlay;
+    const oponentMove = this.data.play.oponenPlay;
     return playerMove == oponentMove
   },
   lastResult() {
     return this.getState().hasWon;
   },
   saveHistory(result) {
-    const cs = this.getState();
+    this.data.hasWon = result;
+    this.data.hasDrawn = this.isDraw()
     if(this.isDraw()){
-      cs.wins+=1
+      this.data.wins+=1
     }
     else if (!this.isDraw() && result) {
-      cs.wins += 1;
+      this.data.wins += 1;
     }
-
+    console.log("SAVE HISTORY");
+    this.changeOponentStatus(false)    
     this.setPlayerDataOnRoom()
-    this.setState(cs)
     // localStorage.setItem("data", JSON.stringify(currentHistory))
   },
 };

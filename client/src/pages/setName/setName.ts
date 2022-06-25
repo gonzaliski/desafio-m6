@@ -10,7 +10,7 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
     formEl.addEventListener('submit',(e)=>{
       e.preventDefault();
       const target = e.target as any;
-      state.setName(target["name__input"].value)
+      state.setName(target["name"].value)
       state.signIn(()=>{
         state.accessToRoom(()=>{
           state.setPlayerDataOnRoom();
@@ -27,7 +27,7 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
     Tijera</h1>
     <form class="form" id="form">
     <h2 class="form-title">Tu nombre</h2>
-    <input required class="name__input" name="name__input" type="text"></input>
+    <input required class="name__input" name="name" maxlength="12" type="text"></input>
     <play-button class="button-play" id="send-button">Empezar</play-button>
     </form>
     <play-options class="options"></play-options>

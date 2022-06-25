@@ -1,19 +1,27 @@
 import {Router} from "@vaadin/router"
 import { state } from "../../state";
+
 customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement {
    playerMove = state.data.play.myPlay
    oponentMove = state.data.play.oponentPlay
-   
    imageURL = require("url:../../assets/star.png");
-  connectedCallback(){
-    this.render()
-  }
-  addListeners(){
-    console.log("yo jugue",this.playerMove, "y mi oponente:", this.playerMove);
+
     
-   const buttonEl =  this.querySelector(".play-again__button")
-   console.log(buttonEl);
-   
+   connectedCallback(){
+    const oponentHasPlayed = state.getOponent().hasPlayed
+    if(!oponentHasPlayed){
+      console.log("aAA");
+      
+      state.whoWins()
+    }
+     this.render()
+    }
+    addListeners(){
+    console.log("en juego.",state.data.play);
+      console.log("yo jugue",this.playerMove, "y mi oponente:", this.oponentMove);
+      
+      const buttonEl =  this.querySelector(".play-again__button")
+      console.log(buttonEl);
    buttonEl.addEventListener("click", () => {
       state.setReady(true)
       state.resetPlay()
@@ -21,6 +29,7 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
     });
   }
   render(){
+
     this.innerHTML = `
       <div class="hands__container">
       <elemento-el elemento="${this.oponentMove}" class="option-oponent"></elemento-el>
@@ -88,13 +97,14 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
   <div class="result__container">
   <div class="star__container">
   <img src=${this.imageURL} class="star-img">
-  <p class="result-text">${state.data.hasWon ? "Ganaste" : "Perdiste"}</p>
+  <p class="result-text">${(state.data.hasWon && !state.data.hasDrawn) ? "Ganaste" : 
+  (state.data.hasDrawn)? "Empate" : "Perdiste"}</p>
     </div>
     <div class="score__container">
     <p class="score-title">Score</p>
     <div class="score-result__container">
-    <p>${state.data.name}: ${state.data.history.player}</p>
-    <p>${state.getOponent().name}:${state.data.history.com} </p>
+    <p>${state.data.name}: ${state.data.wins}</p>
+    <p>${state.getOponent().name}:${state.getOponent().wins} </p>
     </div>
     </div>
     <play-button class="play-again__button">Volver a jugar</play-button> 

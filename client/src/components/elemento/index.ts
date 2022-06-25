@@ -19,7 +19,6 @@ customElements.define('elemento-el', class Elemento extends HTMLElement {
           if(this.elemento == "piedra" || this.elemento == "papel" || this.elemento == "tijera"){            
             state.savePlayerPlay(this.elemento);
             state.setReady(false)
-
           }
         })
       }

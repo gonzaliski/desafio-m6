@@ -45,9 +45,12 @@ app.post("/rooms",(req,res)=>{
        const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/gameData");
        gameRoomRef.child(userId.toString()).set(
         {
+          choice:req.body.choice,
           name:req.body.name,
           online:req.body.online,
           ready:req.body.ready,
+          wins:req.body.wins,
+          hasPlayed:req.body.hasPlayed
         },()=>{res.json("ok")})
 
     })
@@ -58,13 +61,11 @@ app.post("/rooms",(req,res)=>{
     roomCollection.doc(roomId).get()
     .then(snap=>{
       const rtdbId = snap.data();
-       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame");
-       gameRoomRef.child("playersChoices").set(
+       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/playersChoices");
+       gameRoomRef.child(name).set(
         {
-          [name]:{
             name,
             choice:req.body.choice
-          }
         },()=>{res.json("ok")})
     })
     
