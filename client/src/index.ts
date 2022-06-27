@@ -8,3 +8,8 @@ import { Router } from "@vaadin/router";
  //  state.setReady(false)
    Router.go("/")
 })();
+
+window.addEventListener("unload",()=>{
+   state.data.hasPlayed = false
+   state.resetPlay()
+})

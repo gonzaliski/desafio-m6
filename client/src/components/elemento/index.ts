@@ -20,9 +20,8 @@ customElements.define('elemento-el', class Elemento extends HTMLElement {
             state.data.hasPlayed = true        
             state.savePlayerPlay(this.elemento);
             // state.data.hasPlayed = false        
-            state.setReady(false)
           }
-        })
+        },{once : true})
       }
       
       render(){

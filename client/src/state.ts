@@ -26,8 +26,8 @@ const state = {
     play:{
       myPlay:"",
       oponentPlay:""
-    }
-
+    },
+    oponentWins:0
   },
   listeners:[],
   subscribe(callback: (any) => any) {
@@ -50,7 +50,6 @@ const state = {
     rtdbRef.on("value", (snapshot) => {
       const cs = this.getState();
       const value = snapshot.val();
-      console.log(value.currentGame);
       cs.rtdbData = map(value.currentGame.gameData)
       console.log(cs.rtdbData);
       this.saveOponentData(value.currentGame)
@@ -60,7 +59,6 @@ const state = {
   saveOponentData(data){
     const playerChoices = map(data.playersChoices) as any;
     const oponentDataMap = playerChoices.filter((p)=>{return p.name != this.data.name })
-    console.log(oponentDataMap);
     const oponentData = oponentDataMap[0] as any;
     console.log(oponentData);
     if(oponentData != undefined){
@@ -187,7 +185,8 @@ const state = {
     const oponentData = this.data.rtdbData.filter((p)=>{
       return [p.name] && (p.name != this.data.name)
     })
-
+    console.log(oponentData[0]);
+    
     return oponentData[0]
   },
   isOponentReady(){
@@ -231,9 +230,10 @@ const state = {
   },
   resetPlay(){
     this.data.play.myPlay =""
-    this.data.play.oponentPlay =""
+    this.data.play.choice=""
     this.data.hasWon=false
     this.data.hasDrawn=false
+    this.data.ready=false
     this.setPlayerDataOnRoom()
     this.setPlayerPlayOnRoom()
   },
@@ -252,7 +252,7 @@ const state = {
   },
   isDraw(){
     const playerMove = this.data.play.myPlay;
-    const oponentMove = this.data.play.oponenPlay;
+    const oponentMove = this.data.play.oponentPlay;
     return playerMove == oponentMove
   },
   lastResult() {
@@ -262,12 +262,17 @@ const state = {
     this.data.hasWon = result;
     this.data.hasDrawn = this.isDraw()
     if(this.isDraw()){
-      this.data.wins+=1
+      this.data.wins+=0
     }
     else if (!this.isDraw() && result) {
       this.data.wins += 1;
+    }else {
+      this.data.oponentWins= this.getOponent().wins + 1;
+      console.log("oponentWins + 1", this.data.oponentWins);
     }
-    console.log("empate?", this.isDraw);
+    console.log("empate?", this.isDraw());
+    console.log("oponentWins", this.data.oponentWins);
+    
     this.setPlayerDataOnRoom()
    
   },
