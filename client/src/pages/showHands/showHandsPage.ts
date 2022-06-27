@@ -9,7 +9,7 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
     
    connectedCallback(){
     const oponentHasPlayed = state.getOponent().hasPlayed
-    if(!oponentHasPlayed){
+    if(oponentHasPlayed){
       console.log("aAA");
       
       state.whoWins()

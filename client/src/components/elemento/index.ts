@@ -16,8 +16,10 @@ customElements.define('elemento-el', class Elemento extends HTMLElement {
     addListeners(){
         const elemento = this.shadow.querySelector(".elemento-container");
         elemento.addEventListener("click",()=>{
-          if(this.elemento == "piedra" || this.elemento == "papel" || this.elemento == "tijera"){            
+          if(this.elemento == "piedra" || this.elemento == "papel" || this.elemento == "tijera"){
+            state.data.hasPlayed = true        
             state.savePlayerPlay(this.elemento);
+            // state.data.hasPlayed = false        
             state.setReady(false)
           }
         })

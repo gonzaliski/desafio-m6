@@ -35,12 +35,11 @@ const state = {
     this.listeners.push(callback);
  },
   init() {
-		// const localData = JSON.parse(localStorage.getItem("data"));
-    // console.log(localData);
-		// if (localStorage.getItem("data")) {
-		// 	return (this.data.history = localData);
-		// }
-		// console.log(localData);
+		const localData = JSON.parse(localStorage.getItem("data") || "");
+    console.log(localData);
+		if (localStorage.getItem("data")) {
+			return (this.setState(localData));
+		}
 	},
   listenDatabase() {
     // Connection with RTDB
@@ -201,7 +200,7 @@ const state = {
       for (const cb of this.listeners) {
         cb();
       }
-  
+   localStorage.setItem("data", JSON.stringify(newState))
   },
   setPlayerPlayOnRoom(){
     const cs = this.getState();
@@ -228,11 +227,7 @@ const state = {
     this.data.choice = play;
     this.data.play.myPlay = play;
     this.setPlayerDataOnRoom()
-    this.setPlayerPlayOnRoom()
-  },
-  changeOponentStatus(status:Boolean){
-    this.data.hasPlayed = status
-    this.setPlayerDataOnRoom()
+    this.setPlayerPlayOnRoom()    
   },
   resetPlay(){
     this.data.play.myPlay =""
@@ -272,10 +267,9 @@ const state = {
     else if (!this.isDraw() && result) {
       this.data.wins += 1;
     }
-    console.log("SAVE HISTORY");
-    this.changeOponentStatus(false)    
+    console.log("empate?", this.isDraw);
     this.setPlayerDataOnRoom()
-    // localStorage.setItem("data", JSON.stringify(currentHistory))
+   
   },
 };
 

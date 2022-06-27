@@ -8,9 +8,9 @@ customElements.define('game-page', class GamePage extends HTMLElement {
     const playerOption = this.querySelector(".options")
     playerOption.addEventListener("click",()=>{
       state.subscribe(()=>{
-        const oponentPlay = state.data.play.oponentPlay
-        if(oponentPlay != ""){
-          console.log(oponentPlay, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        const oponentPlayed = state.getOponent().hasPlayed
+        if(oponentPlayed){
+          console.log(oponentPlayed, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
           Router.go("/showHands")
         }
       })     
