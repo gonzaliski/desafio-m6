@@ -3,10 +3,12 @@ import { state } from "../../state";
 customElements.define('instructions-page', class InstructionsPage extends HTMLElement {
   roomId: Number;
   localPlayerName:String;
+  oponentName:String;
   connectedCallback(){
     const cs = state.getState()
     this.roomId = cs.roomId
     this.localPlayerName = cs.name
+    this.oponentName = state.getOponent().name
     this.render()
   }
   addListeners(){
@@ -21,7 +23,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
     <div class="header__container">
       <div class="players-stats__box">
         <p class="player">${this.localPlayerName}</p>
-        <p class="player two">Jugador 2</p>
+        <p class="player two">${this.oponentName}</p>
       </div>
       <div>
         <h4>Sala</h4>

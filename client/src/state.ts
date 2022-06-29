@@ -60,7 +60,7 @@ const state = {
     const playerChoices = map(data.playersChoices) as any;
     const oponentDataMap = playerChoices.filter((p)=>{return p.name != this.data.name })
     const oponentData = oponentDataMap[0] as any;
-    console.log(oponentData);
+    // console.log(oponentData);
     if(oponentData != undefined){
       this.data.play.oponentPlay = oponentData.choice
     }
@@ -125,9 +125,7 @@ const state = {
     this.setState(cs);
   },
   setReady(ready:Boolean){
-    const cs = this.getState()
-    cs.ready = ready;
-    this.setState(cs)
+    this.data.ready = ready;
     this.setPlayerDataOnRoom()
   },
   askNewRoom(callback?) {
@@ -261,18 +259,15 @@ const state = {
   saveHistory(result) {
     this.data.hasWon = result;
     this.data.hasDrawn = this.isDraw()
-    if(this.isDraw()){
-      this.data.wins+=0
-    }
-    else if (!this.isDraw() && result) {
+  if (!this.isDraw() && result) {
       this.data.wins += 1;
-    }else {
+    }else if(!result) {
       this.data.oponentWins= this.getOponent().wins + 1;
-      console.log("oponentWins + 1", this.data.oponentWins);
+      console.log("oponentWins + 1", this.getOponent().wins + 1);
     }
     console.log("empate?", this.isDraw());
     console.log("oponentWins", this.data.oponentWins);
-    
+    state.data.hasPlayed = false
     this.setPlayerDataOnRoom()
    
   },
