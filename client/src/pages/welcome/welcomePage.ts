@@ -7,9 +7,7 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
   addListeners(){
     const newRoomEl = this.querySelector("#new-room");
     newRoomEl.addEventListener('click',()=>{
-      state.askNewRoom(()=>{
-        state.setPlayerDataOnRoom()
-      });
+      state.askNewRoom();
       Router.go("/setName")
     });
     const joinRoomEl = this.querySelector("#join-room");
@@ -23,8 +21,8 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
     <h1 class="title">Piedra
     Papel ó
     Tijera</h1>
-    <play-button class="button-play" id="new-room">Crear sala</play-button>
-    <play-button class="button-play" id="join-room">Ingresar a una sala</play-button>
+    <blue-button class="button-play" id="new-room">Crear sala</blue-button>
+    <blue-button class="button-play" id="join-room">Ingresar a una sala</blue-button>
     <play-options class="options"></play-options>
     `
     this.className = "title_container"

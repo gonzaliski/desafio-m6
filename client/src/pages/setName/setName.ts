@@ -1,19 +1,26 @@
 import {Router} from "@vaadin/router"
-import { rtdb } from "../../rtdb";
 import { state } from "../../state";
 customElements.define('set-name-page', class SetName extends HTMLElement {
+  shadow:ShadowRoot
   connectedCallback() {
     this.render();
   }
   addListeners(){
-    const formEl = this.querySelector(".form");
-    formEl.addEventListener('submit',(e)=>{
+    const formEl = this.querySelector("#form");
+    console.log(formEl);
+    
+    formEl.addEventListener("submit",(e)=>{
       e.preventDefault();
       const target = e.target as any;
       state.setName(target["name"].value)
       state.signIn(()=>{
         state.accessToRoom(()=>{
-          state.setPlayerDataOnRoom();
+          
+            state.checkPlayerOnRoom(()=>{
+               Router.go("/cant-connect")
+            })
+
+          // state.setPlayerDataOnRoom();
         });
       });
       Router.go("/room-info")
@@ -28,7 +35,7 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
     <form class="form" id="form">
     <h2 class="form-title">Tu nombre</h2>
     <input required class="name__input" name="name" maxlength="12" type="text"></input>
-    <play-button class="button-play" id="send-button">Empezar</play-button>
+    <blue-button  type="submit" class="button-play" id="send-button" >Empezar</blue-button>
     </form>
     <play-options class="options"></play-options>
     `

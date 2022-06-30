@@ -8,17 +8,17 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
     const cs = state.getState()
     this.roomId = cs.roomId
     this.localPlayerName = cs.name
-    this.oponentName = state.getOponent().name
+    this.oponentName = state.data.oponent.name
     this.render()
   }
   addListeners(){
-    if(state.isOponentReady()){
+    if(state.data.oponent.ready){
       console.log("oponent was already waiting");
       
       Router.go("/game")
     }
     state.subscribe(()=>{      
-      if(state.isOponentReady()){
+      if(state.data.oponent.ready){
         console.log("oponent is ready");
         Router.go("/game")
       }
@@ -73,9 +73,6 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
         align-items:center;
         margin:10px;
         font-size:24px;
-    }
-    .players-stats__box{
-
     }
     .button-play{
       margin:auto;

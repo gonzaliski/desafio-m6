@@ -21,7 +21,7 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
     Tijera</h1>
     <form class="form" id="form">
     <input required class="name__input" name="room-id__input" type="text"></input>
-    <play-button class="button-play" id="send-button">Ingresar a la sala</play-button>
+    <blue-button class="button-play" id="send-button">Ingresar a la sala</blue-button>
     </form>
     <play-options class="options"></play-options>
     `

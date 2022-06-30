@@ -10,14 +10,11 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     this.render();
   }
   addListeners(){
-      state.subscribe(()=>{
-        const cs = state.getState()
-        if(cs.IsRoomFull){
-            Router.go("/instructions")
-        }
-      })
-      const testEl = this.querySelector(".test-button")
-      testEl.addEventListener("click",()=>{
+    if(state.data.oponent && state.data.oponent.online){
+      Router.go("/instructions")
+    }
+      const buttonEl = this.querySelector("#next")
+      buttonEl.addEventListener("click",()=>{
         Router.go("/instructions")
       })
   }
@@ -40,7 +37,7 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     <h4 class="room-id__title">${this.roomId}</h4>
     <p> con tu contrincante</p>
     </div>
-    <button class="test-button">test</button>
+    <blue-button class="button-play" id="next">Siguiente</blue-button>
     <div class="options__container">
     <play-options class="options"></play-options>
     </div>

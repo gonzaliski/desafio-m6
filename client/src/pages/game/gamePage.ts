@@ -8,7 +8,7 @@ customElements.define('game-page', class GamePage extends HTMLElement {
     const playerOption = this.querySelector(".options")
     playerOption.addEventListener("click",()=>{
       state.subscribe(()=>{
-        const oponentPlayed = state.getOponent().hasPlayed
+        const oponentPlayed = state.data.oponent.hasPlayed
         state.data.hasPlayed = false
         if(oponentPlayed && (location.pathname == "/game")){
           console.log("cambiando a showhands");

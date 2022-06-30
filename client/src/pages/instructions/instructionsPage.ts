@@ -8,7 +8,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
     const cs = state.getState()
     this.roomId = cs.roomId
     this.localPlayerName = cs.name
-    this.oponentName = state.getOponent().name
+    this.oponentName = state.data.oponent.name
     this.render()
   }
   addListeners(){
@@ -33,7 +33,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
         <h2 class="title">Presioná jugar
         y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.
         </h2>
-        <play-button class="button-play">Jugar!</play-button>
+        <blue-button class="button-play">Jugar!</blue-button>
         <div class="options__container">
         <play-options class="options"></play-options>
         </div>

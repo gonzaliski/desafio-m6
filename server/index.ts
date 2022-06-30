@@ -35,15 +35,40 @@ app.post("/rooms",(req,res)=>{
       })
   })
 
-  app.post("/roomData", (req,res)=>{
-
-   const userId = req.body.userId
-   const roomId = req.body.roomId 
+  app.get("/rooms/:roomId/check",(req,res)=>{
+    const {roomId} = req.params
     roomCollection.doc(roomId).get()
     .then(snap=>{
       const rtdbId = snap.data();
        const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/gameData");
-       gameRoomRef.child(userId.toString()).set(
+       gameRoomRef.once("value").then((snap)=>{
+        const snapData = snap.val();
+        res.json(snapData)
+      },()=>{res.json("ok")})
+    })
+    
+  })
+
+  app.patch("/rooms/wins", (req,res)=>{
+    const {wins, roomId,userId} = req.body
+    roomCollection.doc(roomId).get()
+    .then(snap=>{
+      const rtdbId = snap.data();
+      const playerRef = rtdb.ref(`/rooms/${rtdbId.rtdbRoomId}/currentGame/gameData/${userId}`)
+      playerRef.update({
+        wins:wins
+      },()=>{res.json("ok")})
+  })
+})
+
+  app.post("/roomData", (req,res)=>{
+   const {userId} = req.body
+   const {roomId} = req.body
+    roomCollection.doc(roomId).get()
+    .then(snap=>{
+      const rtdbId = snap.data();
+       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/gameData");
+       gameRoomRef.child(userId).set(
         {
           choice:req.body.choice,
           name:req.body.name,
@@ -56,8 +81,7 @@ app.post("/rooms",(req,res)=>{
     })
   })
   app.post("/playersChoices", (req,res)=>{
-    const name = req.body.name
-    const roomId = req.body.roomId 
+    const {name,roomId} = req.body
     roomCollection.doc(roomId).get()
     .then(snap=>{
       const rtdbId = snap.data();
@@ -95,8 +119,7 @@ app.get("/rooms/:roomId",(req,res)=>{
 
 
 app.post("/signup", (req,res)=>{
-const {email} = req.body;
-const {name} = req.body;
+const {email,name} = req.body;
 userCollection
 .where("email","==",email)
 .get()
