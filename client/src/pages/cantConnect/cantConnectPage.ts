@@ -11,7 +11,7 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
     })
     setTimeout(()=>{
         Router.go("/")
-    },5000)
+    },8000)
   }
 
   render(){

@@ -8,6 +8,11 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
   addListeners(){
     const formEl = this.querySelector("#form");
     console.log(formEl);
+    const buttonEl = this.querySelector("#send-button")
+    buttonEl?.addEventListener("click",(e)=>{
+      e.preventDefault();
+      formEl?.dispatchEvent(new Event("submit"))
+    })
     
     formEl.addEventListener("submit",(e)=>{
       e.preventDefault();
@@ -17,13 +22,15 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
         state.accessToRoom(()=>{
           
             state.checkPlayerOnRoom(()=>{
+              Router.go("/room-info")
+            },
+            ()=>{
                Router.go("/cant-connect")
             })
 
           // state.setPlayerDataOnRoom();
         });
       });
-      Router.go("/room-info")
     });
   }
 

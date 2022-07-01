@@ -10,6 +10,9 @@ import { Router } from "@vaadin/router";
 })();
 
 window.addEventListener("unload",()=>{
+   console.log("funciona??");
+   
    state.data.hasPlayed = false
+   state.updateStatusOnRoom()
    state.resetPlay()
 })

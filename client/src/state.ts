@@ -94,7 +94,7 @@ const state = {
       console.error("No hay nombre en el state");
     }
   },
-  checkPlayerOnRoom(cb?){
+  checkPlayerOnRoom(accept,reject){
     const cs = this.getState();
     const roomId = cs.roomId;
     fetch(API_BASE_URL + "/rooms/" + roomId + "/check")
@@ -103,43 +103,35 @@ const state = {
       })
       .then((data) => {
         console.log("aaaaaaa",data);
-        this.processData(data,cb)
-      //  this.listenRoom();
-    
+        return this.processData(data,accept,reject)
       });
       
   },
-  processData(data,cb?){
-     const players = map(data) as any
-      console.log("data to check", players);
-      const names = players.map((p)=>{return p.name})      
-      console.log(names);
-      let isPlayerOnRoom = names.includes(this.data.name)
-      console.log("player name is in room:", isPlayerOnRoom, "there's 2 players?:", players.length < 2);
-      if(!isPlayerOnRoom && players.length < 2){
+  processData(data,acc,rej){
+      let isPlayerOnRoom = data.names.includes(this.data.name)
+      console.log("player name is in room:", isPlayerOnRoom, "there's 2 players?:", data.playersOnline.length < 2);
+       if(!isPlayerOnRoom && data.playersOnline < 2){
         console.log("player is new in room");
          this.setPlayerDataOnRoom()
+         acc()
       }else if(isPlayerOnRoom){
         console.log("player were here before");
-        
-        const playerData = players.filter((p)=>{return p.name == this.data.name})
-        this.updateLocalDataFromRoom(playerData[0])
+        this.updateLocalDataFromRoom()
+        acc()
       }else{
         console.log("callback");
-        
-          cb();
+        rej()
       }
   },
   updateLocalDataFromRoom(data){
-    
     const cs = this.getState()
     console.log("updating wins");
-    console.log(data);
-    cs.wins = data.wins
+    const listData = map(this.data.rtdbData) as any;
+    const playerData = listData.filter((p)=>{return p.name == this.data.name})
+    cs.wins = playerData.wins
     cs.ready = false
     cs.hasPlayed = false
     cs.choice = ""
-    // this.setPlayerDataOnRoom()
     this.setState(cs)
   },
   setPlayerDataOnRoom(){
@@ -187,6 +179,66 @@ const state = {
         console.log(res);
       })
   },
+  updateReadyOnRoom(){
+    const cs = this.getState();
+    fetch(API_BASE_URL + "/rooms/ready",{
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body:JSON.stringify({
+          userId:cs.userId,
+          roomId:cs.roomId,
+          ready:cs.ready,
+        })
+    }).then((res)=>{
+      return res.json()
+    })
+      .then((res)=>{
+        this.setState(cs)
+        console.log(res);
+      })
+  },
+  updateChoiceOnRoom(){
+    const cs = this.getState();
+    fetch(API_BASE_URL + "/rooms/choice",{
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body:JSON.stringify({
+          userId:cs.userId,
+          roomId:cs.roomId,
+          choice:cs.choice,
+        })
+    }).then((res)=>{
+      return res.json()
+    })
+      .then((res)=>{
+        this.setState(cs)
+        console.log(res);
+      })
+  },
+  updateStatusOnRoom(){
+    const cs = this.getState();
+    fetch(API_BASE_URL + "/rooms/hasPlayed",{
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body:JSON.stringify({
+          userId:cs.userId,
+          roomId:cs.roomId,
+          hasPlayed:cs.hasPlayed,
+        })
+    }).then((res)=>{
+      return res.json()
+    })
+      .then((res)=>{
+        this.setState(cs)
+        console.log(res);
+      })
+  },
   setName(name:String){
     const cs = this.getState();
     console.log(name);
@@ -195,7 +247,7 @@ const state = {
   },
   setReady(ready:Boolean){
     this.data.ready = ready;
-    this.setPlayerDataOnRoom()
+    this.updateReadyOnRoom()
   },
   askNewRoom(callback?) {
     const cs = this.getState();    
@@ -261,38 +313,23 @@ const state = {
       console.log("el state cambio",newState);
       
   },
-  setPlayerPlayOnRoom(){
-    const cs = this.getState();
-    fetch(API_BASE_URL + "/playersChoices",{
-      method: "post",
-      headers: {
-        "Accept": "application/json",
-        "content-type": "application/json",
-      },
-      body:JSON.stringify({
-          choice:cs.choice,
-          name:cs.name,
-          roomId:cs.roomId,
-        })  
-    }).then((res)=>{
-      return res.json()
-    })
-      .then(()=>{
-      })
-  },
+
   savePlayerPlay(play: Play) {
     this.data.ready = false;
     this.data.choice = play;
     this.data.play.myPlay = play;
-    this.setPlayerDataOnRoom()
+    this.updateChoiceOnRoom()
+    this.updateReadyOnRoom()
+    this.updateStatusOnRoom()
   },
   resetPlay(){
     this.data.play.myPlay =""
-    this.data.play.choice=""
+    this.data.choice=""
     this.data.hasWon=false
     this.data.hasDrawn=false
     this.data.ready=false
-    this.setPlayerDataOnRoom()
+    this.updateChoiceOnRoom()
+    this.updateReadyOnRoom()
   },
   whoWins() {    
     const playerMove = this.data.choice;
@@ -328,6 +365,7 @@ const state = {
     console.log("oponentWins", this.data.oponentWins);
     state.data.hasPlayed = false
     this.updateScoreOnRoom()
+    this.updateStatusOnRoom()
    
   },
 };

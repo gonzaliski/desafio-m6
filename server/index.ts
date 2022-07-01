@@ -1,5 +1,6 @@
 import { rtdb,firestore } from "./db";
 import { customAlphabet, nanoid } from 'nanoid'
+import { map} from 'lodash'
 //import 'dotenv/config'
 import * as cors from "cors";
 //import {v4  as uuidv4} from "uuid"
@@ -43,7 +44,14 @@ app.post("/rooms",(req,res)=>{
        const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/gameData");
        gameRoomRef.once("value").then((snap)=>{
         const snapData = snap.val();
-        res.json(snapData)
+        const listData = map(snapData) as any;
+        const getNames = listData.map((p)=>{return p.name})
+        const numberOfPlayers = listData.length
+        let roomValues = {
+          names: getNames,
+          playersOnline: numberOfPlayers
+        }
+        res.json(roomValues)
       },()=>{res.json("ok")})
     })
     
@@ -59,6 +67,40 @@ app.post("/rooms",(req,res)=>{
         wins:wins
       },()=>{res.json("ok")})
   })
+})
+app.patch("/rooms/ready", (req,res)=>{
+  const {ready, roomId,userId} = req.body
+  roomCollection.doc(roomId).get()
+  .then(snap=>{
+    const rtdbId = snap.data();
+    const playerRef = rtdb.ref(`/rooms/${rtdbId.rtdbRoomId}/currentGame/gameData/${userId}`)
+    playerRef.update({
+      ready:ready
+    },()=>{res.json("ok")})
+})
+})
+
+app.patch("/rooms/choice", (req,res)=>{
+  const {choice, roomId,userId} = req.body
+  roomCollection.doc(roomId).get()
+  .then(snap=>{
+    const rtdbId = snap.data();
+    const playerRef = rtdb.ref(`/rooms/${rtdbId.rtdbRoomId}/currentGame/gameData/${userId}`)
+    playerRef.update({
+      choice:choice
+    },()=>{res.json("ok")})
+})
+})
+app.patch("/rooms/hasPlayed", (req,res)=>{
+  const {hasPlayed, roomId,userId} = req.body
+  roomCollection.doc(roomId).get()
+  .then(snap=>{
+    const rtdbId = snap.data();
+    const playerRef = rtdb.ref(`/rooms/${rtdbId.rtdbRoomId}/currentGame/gameData/${userId}`)
+    playerRef.update({
+      hasPlayed:hasPlayed
+    },()=>{res.json("ok")})
+})
 })
 
   app.post("/roomData", (req,res)=>{

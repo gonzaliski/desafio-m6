@@ -10,9 +10,13 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     this.render();
   }
   addListeners(){
-    if(state.data.oponent && state.data.oponent.online){
-      Router.go("/instructions")
-    }
+    // state.subscribe(()=>{
+    //   if(state.data.oponent && state.data.oponent.online){
+    //     Router.go("/instructions")
+    //   }
+    // })
+    console.log("a");
+    
       const buttonEl = this.querySelector("#next")
       buttonEl.addEventListener("click",()=>{
         Router.go("/instructions")

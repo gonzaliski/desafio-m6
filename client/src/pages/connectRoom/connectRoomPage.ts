@@ -6,6 +6,11 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
   }
   addListeners(){
     const formEl = this.querySelector(".form");
+    const buttonEl = this.querySelector("#send-button")
+    buttonEl.addEventListener("click",(e)=>{
+      e.preventDefault();
+      formEl.dispatchEvent(new Event("submit"))
+    })
     formEl.addEventListener('submit',(e)=>{
       e.preventDefault();
       const target = e.target as any;
