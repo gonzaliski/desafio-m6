@@ -55,17 +55,16 @@ const state = {
       const value = snapshot.val();
       cs.rtdbData = map(value.currentGame.gameData)
       console.log(cs.rtdbData);
-      this.saveOponentData(value.currentGame.gameData)
+      this.saveOponentData(cs.rtdbData,cs)
         this.setState(cs);
     });
   },
-  saveOponentData(data){
-    const mappedData = map(data) as any;
-    const oponentDataMap = mappedData.filter((p)=>{return p.name != this.data.name })
-    const oponentData = oponentDataMap[0] as Player;
+  saveOponentData(data,cs){
+    const oponentDataFilter = data.filter((p)=>{return p.name != this.data.name })
+    const oponentData = oponentDataFilter[0] as Player;
     // console.log(oponentData);
     if(oponentData != undefined){
-      this.data.oponent = oponentData
+      cs.oponent = oponentData
     }
   },
   signIn(callback?) {
@@ -123,11 +122,13 @@ const state = {
         rej()
       }
   },
-  updateLocalDataFromRoom(data){
+  updateLocalDataFromRoom(){
     const cs = this.getState()
     console.log("updating wins");
-    const listData = map(this.data.rtdbData) as any;
-    const playerData = listData.filter((p)=>{return p.name == this.data.name})
+    const listData = map(cs.rtdbData) as any;
+    const playerData = listData.filter((p)=>{return p.name == this.data.name})[0]
+    console.log(playerData);
+    
     cs.wins = playerData.wins
     cs.ready = false
     cs.hasPlayed = false

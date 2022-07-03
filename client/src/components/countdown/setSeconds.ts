@@ -9,9 +9,11 @@ export function setSeconds(container) {
   const intervalId = setInterval(() => {
     if (countdown == 0) {
         if(location.pathname == "/game"){ 
-          alert("Se acabó el tiempo porque vos o tu rival no jugó")
-          clearInterval(intervalId);
-          Router.go("/instructions")
+          setTimeout(()=>{
+            alert("Se acabó el tiempo porque vos o tu rival no jugó")
+            clearInterval(intervalId);
+            Router.go("/instructions")
+          },1000)
         }
       clearInterval(intervalId);
     }

@@ -2,12 +2,14 @@ import {Router} from "@vaadin/router"
 import { state } from "../../state";
 
 customElements.define('result-page', class ResultPage extends HTMLElement {
+  oponentWins:Number;
    imageURL = require("url:../../assets/star.png");
    connectedCallback(){
+    this.oponentWins = state.data.oponent.wins
     setTimeout(()=>{
 
       this.render()
-    },300)
+    },600)
     }
     addListeners(){      
       const buttonEl = this.querySelector(".play-again__button")
@@ -15,15 +17,18 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
    buttonEl.addEventListener("click", () => {
     console.log("volviendo a jugar");
       state.resetPlay()
-      Router.go("/instructions");
+      setTimeout(()=>{
+        Router.go("/instructions");
+
+      },1000)
     });
   }
   render(){
 
     this.innerHTML = `
       <div class="hands__container">
-      <elemento-el elemento="${state.data.choice}" class="option-oponent"></elemento-el>
-      <elemento-el elemento="${state.data.oponent.choice}" class="option-player"></elemento-el>
+      <elemento-el elemento="${state.data.oponent.choice}" class="option-oponent"></elemento-el>
+      <elemento-el elemento="${state.data.choice}" class="option-player"></elemento-el>
       </div>
       <div class="container">
       <div class="result__container">

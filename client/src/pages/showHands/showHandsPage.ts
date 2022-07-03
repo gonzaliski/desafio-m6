@@ -4,23 +4,25 @@ import { state } from "../../state";
 customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement {
   oponentHand:String;
   playerHand:String;
+
     
    connectedCallback(){
-    this.oponentHand = state.data.choice
-    this.playerHand = state.data.oponent.choice
+    this.oponentHand = state.data.oponent.choice
+    this.playerHand = state.data.choice
+    
      this.render()
     }
     addListeners(){
       console.log("en juego.",state.data.play);
-      console.log("yo jugue",state.data.choice, "y mi oponente:", state.data.oponent.choice);
+      console.log("yo jugue",this.playerHand, "y mi oponente:", this.oponentHand);
       console.log(state.listeners);
-      setTimeout(()=>{
         const oponentHasPlayed = state.data.oponent.hasPlayed
-        if(oponentHasPlayed) {
-          state.whoWins()
-        }
-        Router.go("/result");
-      },2000)
+        setTimeout(()=>{
+          if(oponentHasPlayed) {
+            state.whoWins()
+            Router.go("/result");
+          }
+        },3000)
     
   }
   render(){  

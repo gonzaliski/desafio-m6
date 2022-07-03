@@ -18,7 +18,7 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
       Router.go("/game")
     }
     state.subscribe(()=>{      
-      if(state.data.oponent.ready){
+      if(state.data.oponent.ready && state.data.ready){
         console.log("oponent is ready");
         Router.go("/game")
       }

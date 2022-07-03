@@ -10,7 +10,7 @@ customElements.define('game-page', class GamePage extends HTMLElement {
       state.subscribe(()=>{
         const oponentPlayed = state.data.oponent.hasPlayed
         console.log("oponent jugó?", oponentPlayed);
-        if(oponentPlayed && (location.pathname == "/game")){
+        if(oponentPlayed && state.data.hasPlayed && (location.pathname == "/game")){
           console.log("cambiando a showhands");
           Router.go("/showHands")
         }
