@@ -9,12 +9,16 @@ customElements.define('game-page', class GamePage extends HTMLElement {
     playerOption.addEventListener("click",()=>{
       state.subscribe(()=>{
         const oponentPlayed = state.data.oponent.hasPlayed
+        const emptyOponentChoice = state.data.oponent.choice == ""
         console.log("oponent jugó?", oponentPlayed);
-        if(oponentPlayed && state.data.hasPlayed && (location.pathname == "/game")){
-          console.log("cambiando a showhands");
-          Router.go("/showHands")
-        }
-      })     
+          if(oponentPlayed && !emptyOponentChoice && state.data.choice &&
+            (location.pathname == "/game")){
+            console.log("cambiando a showhands");
+            Router.go("/showHands")
+          }
+      })
+      state.data.ready = false
+      state.updateReadyOnRoom()     
     })
   }
   render(){

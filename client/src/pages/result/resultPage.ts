@@ -7,7 +7,6 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
    connectedCallback(){
     this.oponentWins = state.data.oponent.wins
     setTimeout(()=>{
-
       this.render()
     },600)
     }

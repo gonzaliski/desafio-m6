@@ -62,7 +62,7 @@ const state = {
   saveOponentData(data,cs){
     const oponentDataFilter = data.filter((p)=>{return p.name != this.data.name })
     const oponentData = oponentDataFilter[0] as Player;
-    // console.log(oponentData);
+    console.log("oponent data",oponentData);
     if(oponentData != undefined){
       cs.oponent = oponentData
     }
@@ -101,30 +101,24 @@ const state = {
         return res.json();
       })
       .then((data) => {
-        console.log("aaaaaaa",data);
         return this.processData(data,accept,reject)
       });
       
   },
   processData(data,acc,rej){
       let isPlayerOnRoom = data.names.includes(this.data.name)
-      console.log("player name is in room:", isPlayerOnRoom, "there's 2 players?:", data.playersOnline.length < 2);
        if(!isPlayerOnRoom && data.playersOnline < 2){
-        console.log("player is new in room");
          this.setPlayerDataOnRoom()
          acc()
       }else if(isPlayerOnRoom){
-        console.log("player were here before");
         this.updateLocalDataFromRoom()
         acc()
       }else{
-        console.log("callback");
         rej()
       }
   },
   updateLocalDataFromRoom(){
     const cs = this.getState()
-    console.log("updating wins");
     const listData = map(cs.rtdbData) as any;
     const playerData = listData.filter((p)=>{return p.name == this.data.name})[0]
     console.log(playerData);
@@ -197,7 +191,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res);
+        console.log(res,"ready actualizado");
       })
   },
   updateChoiceOnRoom(){
@@ -217,7 +211,27 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res);
+        console.log(res,"choice actualizado");
+      })
+  },
+  updateConnection(){
+    const cs = this.getState();
+    fetch(API_BASE_URL + "/rooms/online",{
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body:JSON.stringify({
+          userId:cs.userId,
+          roomId:cs.roomId,
+          online:cs.online,
+        })
+    }).then((res)=>{
+      return res.json()
+    })
+      .then((res)=>{
+        this.setState(cs)
+        console.log(res,"desconectado");
       })
   },
   updateStatusOnRoom(){
@@ -237,7 +251,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res);
+        console.log(res,"status actualizado");
       })
   },
   setName(name:String){
@@ -311,7 +325,7 @@ const state = {
       for (const cb of this.listeners) {
         cb();
       }
-      console.log("el state cambio",newState);
+      console.log("el state cambio");
       
   },
 
@@ -364,9 +378,8 @@ const state = {
     }
     console.log("empate?", this.isDraw());
     console.log("oponentWins", this.data.oponentWins);
-    state.data.hasPlayed = false
+    // state.data.hasPlayed = false
     this.updateScoreOnRoom()
-    this.updateStatusOnRoom()
    
   },
 };

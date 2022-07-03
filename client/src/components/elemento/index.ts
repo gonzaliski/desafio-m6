@@ -9,7 +9,7 @@ customElements.define('elemento-el', class Elemento extends HTMLElement {
     }
     
     connectedCallback(){
-      this.elemento = this.getAttribute("elemento") || "tijera";
+      this.elemento = this.getAttribute("elemento") || "";
       this.render();
     }
 

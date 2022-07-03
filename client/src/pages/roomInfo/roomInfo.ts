@@ -7,6 +7,7 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     const cs = state.getState()
     this.roomId = cs.roomId
     this.localPlayerName = cs.name
+    
     this.render();
   }
   addListeners(){
@@ -15,7 +16,24 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     //     Router.go("/instructions")
     //   }
     // })
-    console.log("a");
+    state.subscribe(()=>{
+      const cs = state.getState()
+      console.log(state.data.oponent.online);
+      console.log(state.data.oponent.ready);
+      console.log(state.data.oponent.hasPlayed);
+         if(cs.oponent.online &&
+        (!cs.oponent.ready &&
+        !cs.oponent.hasPlayed) && (cs.online &&
+          (!cs.ready &&
+          !cs.hasPlayed))){
+          console.log("cambiando a instructions");
+          
+          Router.go("/instructions")
+        }
+   
+    })
+    state.data.online = true;
+    state.updateConnection()
     
       const buttonEl = this.querySelector("#next")
       buttonEl.addEventListener("click",()=>{

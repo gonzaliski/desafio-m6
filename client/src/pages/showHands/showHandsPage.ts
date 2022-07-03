@@ -18,7 +18,7 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
       console.log(state.listeners);
         const oponentHasPlayed = state.data.oponent.hasPlayed
         setTimeout(()=>{
-          if(oponentHasPlayed) {
+          if(oponentHasPlayed && state.data.hasPlayed) {
             state.whoWins()
             Router.go("/result");
           }

@@ -9,10 +9,13 @@ import { Router } from "@vaadin/router";
    Router.go("/")
 })();
 
-window.addEventListener("unload",()=>{
-   console.log("funciona??");
-   
-   state.data.hasPlayed = false
-   state.updateStatusOnRoom()
-   state.resetPlay()
+window.addEventListener("beforeunload",()=>{
+      console.log("funciona??");
+      if(state.data.roomId){
+         state.data.hasPlayed = false
+         state.data.online = false
+         state.updateStatusOnRoom()
+         state.resetPlay()
+         state.updateConnection()
+      }
 })

@@ -91,6 +91,17 @@ app.patch("/rooms/choice", (req,res)=>{
     },()=>{res.json("ok")})
 })
 })
+app.patch("/rooms/online", (req,res)=>{
+  const {online, roomId,userId} = req.body
+  roomCollection.doc(roomId).get()
+  .then(snap=>{
+    const rtdbId = snap.data();
+    const playerRef = rtdb.ref(`/rooms/${rtdbId.rtdbRoomId}/currentGame/gameData/${userId}`)
+    playerRef.update({
+      online:online
+    },()=>{res.json("ok")})
+})
+})
 app.patch("/rooms/hasPlayed", (req,res)=>{
   const {hasPlayed, roomId,userId} = req.body
   roomCollection.doc(roomId).get()
