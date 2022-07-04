@@ -20,16 +20,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
   }
   render(){
     this.innerHTML = `
-    <div class="header__container">
-      <div class="players-stats__box">
-        <p class="player">${this.localPlayerName}</p>
-        <p class="player two">${this.oponentName}</p>
-      </div>
-      <div>
-        <h4>Sala</h4>
-        <p>${this.roomId}</p>
-      </div>
-    </div>
+    <info-display></info-display>
         <h2 class="title">Presioná jugar
         y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.
         </h2>
@@ -38,17 +29,22 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
         <play-options class="options"></play-options>
         </div>
     `;
-    this.className = "title_container"
+    this.className = "title__container"
     const style = document.createElement("style");
     style.innerHTML=`
-      .title_container{
+      .title__container{
         display: grid;
-        grid-template-rows: 150px 300px;
+        grid-template-rows: 200px 1fr 1fr 300px;
         align-items: center;
-        width: 65vw;
+        width: 85vw;
         margin: 0 auto;
         height: 100vh;
         position: relative;
+      }
+      @media(max-width:420px){
+        .title__container{
+          grid-template-rows: 110px 300px 1fr 1fr;
+        }
       }
       .title{
         padding:10px;
@@ -57,19 +53,16 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
         font-size: 40px;  
         color:#009048;
       }
+      @media(max-width:420px){
+        .title{
+          font-size: 30px;  
+        }
+      }
       .options{
         pointer-events:none;
         position:absolute;
         bottom:0px;
       }
-      .header__container{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin:10px;
-        font-size:24px;
-        font-family:'Odibee Sans';
-    }
     .options__container{
       display:flex;
       justify-content:center;
@@ -77,16 +70,10 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
     .button-play{
       margin:auto;
     }
-    ..header__container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 10px;
-      font-size: 24px;
-      font-family:'Odibee Sans';
-  }
-    .players-stats__box{
-
+    @media(max-width:420px){
+      .button-play{
+        transform:scale(0.8);
+      }
     }
     `
 

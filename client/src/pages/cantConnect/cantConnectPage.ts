@@ -11,7 +11,7 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
     })
     setTimeout(()=>{
         Router.go("/")
-    },8000)
+    },80000)
   }
 
   render(){
@@ -24,21 +24,26 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
     Ups, esta sala está completa y tu nombre no coincide con nadie en la sala.
     </h2>
     </div>
-    <blue-button id="go-back__button">Volver al menú</blue-button>
+    <blue-button class="button-play" id="go-back__button">Volver al menú</blue-button>
     <play-options class="options"></play-options>
     `
-    this.className = "title_container"
+    this.className = "title__container"
     const style = document.createElement("style");
     style.innerHTML=`
-      .title_container{
+      .title__container{
           display:grid;
-          grid-template-rows: 350px 150px 200px;
+          grid-template-rows: 350px 1fr 1fr 200px;
           align-items: center;
           justify-items:center;
           height:100vh;
           position:relative;
           font-family:'Odibee Sans';
       }
+      @media(max-width:420px){
+        .title__container{
+          grid-template-rows: 250px 50px 200px;
+            }
+          }
       .text__container{
         max-width:317px;
       }
@@ -47,6 +52,11 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
         font-size:35px;
         text-align:center;
       }
+      @media(max-width:420px){
+        .text{
+          font-size:25px;
+            }
+          }
       .title{
         text-align:center;
         font-family:'Roboto';
@@ -54,6 +64,11 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
         font-size: 80px;  
         color:#009048;
       }
+      @media(max-width:420px){
+        .title{
+          font-size: 60px;  
+      }
+    }
       .options{
         pointer-events:none;
         position:absolute;
@@ -69,6 +84,11 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
       .form-title{
           font-size:45px;
       }
+      @media(max-width:420px){
+        .button-play{
+          transform: scale(0.8);
+      }
+    }
 
     `
     this.appendChild(style)

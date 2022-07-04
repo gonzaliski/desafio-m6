@@ -1,10 +1,9 @@
 import { rtdb,firestore } from "./db";
 import { customAlphabet, nanoid } from 'nanoid'
 import { map} from 'lodash'
-//import 'dotenv/config'
+import 'dotenv/config'
 import * as cors from "cors";
-//import {v4  as uuidv4} from "uuid"
-var express = require("express");
+import * as express from "express"
 const port = process.env.PORT || 3000;
 var app = express();
 
@@ -133,20 +132,6 @@ app.patch("/rooms/hasPlayed", (req,res)=>{
 
     })
   })
-  app.post("/playersChoices", (req,res)=>{
-    const {name,roomId} = req.body
-    roomCollection.doc(roomId).get()
-    .then(snap=>{
-      const rtdbId = snap.data();
-       const gameRoomRef = rtdb.ref("/rooms/" + rtdbId.rtdbRoomId + "/currentGame/playersChoices");
-       gameRoomRef.child(name).set(
-        {
-            name,
-            choice:req.body.choice
-        },()=>{res.json("ok")})
-    })
-    
-  })
 
 app.get("/rooms/:roomId",(req,res)=>{
   const {userId} = req.query;
@@ -167,32 +152,6 @@ app.get("/rooms/:roomId",(req,res)=>{
       })
     }
   })
-})
-
-
-
-app.post("/signup", (req,res)=>{
-const {email,name} = req.body;
-userCollection
-.where("email","==",email)
-.get()
-.then((searchResponse)=>{
-  if(searchResponse.empty){
-    userCollection.add({
-      email,
-      name
-    }).then((newUserRef=>{
-      res.json({
-        id:newUserRef.id,
-        new:true
-      })
-    }))
-  }else{
-    res.status(404).json({
-      message:"User already exists"
-    })
-  }
-}) 
 })
 
 app.post("/auth",(req,res)=>{
@@ -223,7 +182,7 @@ app.get("*", function(req,res){
   res.sendFile(__dirname + "/dist/index.html");
 })
 
-//app.user(express.static('dist'))
+app.user(express.static('dist'))
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

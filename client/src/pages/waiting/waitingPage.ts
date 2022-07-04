@@ -5,10 +5,7 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
   localPlayerName:String;
   oponentName:String;
   connectedCallback(){
-    const cs = state.getState()
-    this.roomId = cs.roomId
-    this.localPlayerName = cs.name
-    this.oponentName = state.data.oponent.name
+  
     this.render()
   }
   addListeners(){
@@ -27,18 +24,9 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
 
   render(){
     this.innerHTML = `
-    <div class="header__container">
-    <div class="players-stats__box">
-    <p class="player">${this.localPlayerName}</p>
-    <p class="player two">${this.oponentName}</p>
-    </div>
-    <div>
-    <h4>Sala</h4>
-    <p>${this.roomId}</p>
-    </div>
-    </div>
-    <div class="info__container">
+   <info-display></info-display>
 
+    <div class="info__container">
     <p> Esperando a que</p>
     <p> AAAA presione</p>
     <p> ¡Jugar!...</p>
@@ -52,9 +40,9 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
     style.innerHTML=`
     .title_container{
         display:grid;
-        grid-template-rows: 150px 1fr 300px;
-        align-items:center;
-        width:65vw;
+        grid-template-rows: 200px 1fr 300px;
+          align-items:center;
+          width:85vw;
         margin:0 auto;
         height:100vh;
         position:relative;
@@ -66,13 +54,6 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
       position:absolute;
       bottom:0px;
       
-    }
-    .header__container{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        margin:10px;
-        font-size:24px;
     }
     .button-play{
       margin:auto;

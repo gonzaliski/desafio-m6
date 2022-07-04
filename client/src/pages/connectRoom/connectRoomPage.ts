@@ -30,18 +30,23 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
     </form>
     <play-options class="options"></play-options>
     `
-    this.className = "title_container"
+    this.className = "title__container"
     const style = document.createElement("style");
     style.innerHTML=`
-      .title_container{
+      .title__container{
           display:grid;
-          grid-template-rows: 350px 150px 200px;
+          grid-template-rows: 300px 200px;
           align-items: center;
           justify-items:center;
           height:100vh;
           position:relative;
           font-family:'Odibee Sans';
       }
+      @media(max-width:420px){
+        .title__container{
+          grid-template-rows: 250px 200px;
+            }
+          }
       .title{
         text-align:center;
         font-family:'Roboto';
@@ -49,6 +54,14 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
         font-size: 80px;  
         color:#009048;
       }
+      @media(max-width:420px){
+        .title{
+          font-size: 60px;  
+      }
+        .button-play{
+          transform: scale(0.8);
+      }
+    }
       .options{
         pointer-events:none;
         position:absolute;
