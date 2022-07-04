@@ -31,9 +31,7 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
     <p> AAAA presione</p>
     <p> ¡Jugar!...</p>
     </div>
-    <div class="options__container">
     <play-options class="options"></play-options>
-    </div>
     `;
     this.className = "title_container"
     const style = document.createElement("style");
