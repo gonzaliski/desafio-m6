@@ -95,7 +95,9 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
       }
       .form-title{
           font-size:45px;
-          margin:0;
+      }
+      .button-play{
+        margin-top:5px;
       }
 
     `
