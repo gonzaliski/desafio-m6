@@ -64,8 +64,7 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
     }
       .options{
         pointer-events:none;
-        position:absolute;
-        bottom:0px;
+        margin-top:auto;
       }
       .form{
           display:flex;

@@ -327,13 +327,11 @@ const state = {
   savePlayerPlay(play: Play) {
     this.data.ready = false;
     this.data.choice = play;
-    this.data.play.myPlay = play;
     this.updateChoiceOnRoom()
     this.updateReadyOnRoom()
     this.updateStatusOnRoom()
   },
   resetPlay(){
-    this.data.play.myPlay =""
     this.data.choice=""
     this.data.hasWon=false
     this.data.hasDrawn=false

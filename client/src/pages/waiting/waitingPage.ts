@@ -51,9 +51,9 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
 
     .options{
       pointer-events:none;
-      position:absolute;
-      bottom:0px;
-      
+      margin-top:auto;
+      margin-right: auto;
+      margin-left: auto;
     }
     .button-play{
       margin:auto;

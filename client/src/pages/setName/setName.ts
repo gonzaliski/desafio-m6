@@ -79,8 +79,7 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
     }
       .options{
         pointer-events:none;
-        position:absolute;
-        bottom:0px;
+        margin-top:auto;
       }
       .form{
           display:flex;

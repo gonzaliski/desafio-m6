@@ -25,9 +25,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
         y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.
         </h2>
         <blue-button class="button-play">Jugar!</blue-button>
-        <div class="options__container">
         <play-options class="options"></play-options>
-        </div>
     `;
     this.className = "title__container"
     const style = document.createElement("style");
@@ -60,13 +58,10 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
       }
       .options{
         pointer-events:none;
-        position:absolute;
-        bottom:0px;
+        margin-top:auto;
+        margin-right: auto;
+        margin-left: auto;
       }
-    .options__container{
-      display:flex;
-      justify-content:center;
-    }
     .button-play{
       margin:auto;
     }

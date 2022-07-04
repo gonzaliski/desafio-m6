@@ -18,7 +18,7 @@ customElements.define('game-page', class GamePage extends HTMLElement {
           }
       })
       state.data.ready = false
-      state.updateReadyOnRoom()     
+      state.updateReadyOnRoom()
     })
   }
   render(){
@@ -26,10 +26,10 @@ customElements.define('game-page', class GamePage extends HTMLElement {
         <countdown-el seconds="3" class="countdown-game"></countdown-el>
         <play-options class="options"></play-options>
     `;
-    this.className = "title_container"
+    this.className = "title__container"
     const style = document.createElement("style");
     style.innerHTML=`
-      .title_container{
+      .title__container{
           display:grid;
           grid-template-rows: 500px;
           align-items: center;
@@ -38,8 +38,7 @@ customElements.define('game-page', class GamePage extends HTMLElement {
           position:relative;
       }
       .options{
-        position:absolute;
-        bottom:0px;
+        margin-top:auto;
       }
     `
     

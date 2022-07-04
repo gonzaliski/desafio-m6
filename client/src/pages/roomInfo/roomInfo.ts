@@ -45,9 +45,7 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     <h4 class="room-id__title">${this.roomId}</h4>
     <p> con tu contrincante</p>
     </div>
-    <div class="options__container">
     <play-options class="options"></play-options>
-    </div>
     `
     this.className = "title_container"
     const style = document.createElement("style");
@@ -65,9 +63,9 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
  
       .options{
         pointer-events:none;
-        position:absolute;
-        bottom:0px;
-        
+        margin-top:auto;
+        margin-right: auto;
+        margin-left: auto;
       }
       .info__container{
           display:flex;
@@ -78,10 +76,6 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
       .room-id__title{
           margin:0;
           font-size:45px;
-      }
-      .options__container{
-        display:flex;
-        justify-content:center;
       }
     `
     this.appendChild(style)

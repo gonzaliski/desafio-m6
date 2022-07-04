@@ -25,9 +25,7 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
     <blue-button class="button-play" id="new-room">Crear sala</blue-button>
     <blue-button class="button-play" id="join-room">Ingresar a una sala</blue-button>
     </div>
-    <div class="hands__container">
     <play-options class="options"></play-options>
-    </div>
     `
     this.className = "title__container"
     const style = document.createElement("style");
@@ -68,13 +66,9 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
         transform: scale(0.8);
     }
   }
-      .hands__container{
-        position:absolute;
-        bottom:0px;
-      }
       .options{
         pointer-events:none;
-      
+        margin-top:auto;
       }
       `
       //grid-template-rows: auto 1fr 200px;
