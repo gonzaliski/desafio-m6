@@ -26,7 +26,7 @@
     "dev:front": "parcel serve ./client/src/index.html",
     "build:front": "parcel build ./client/src/index.html",
     "dev:dev": "concurrently \"yarn dev:front\" \"yarn dev:api\"",
-    "dev": "ts-node dev.ts",
+    "dev": "ts-node ./server/dev.ts",
     "test": "ava",
     "build:api": "tsc ./server/index.ts",
     "dev:api": "ts-node ./server/index.ts",
@@ -36,6 +36,5 @@
   "keywords": [],
   "author": "Gon <gon.mendez13@gmail.com>",
   "description": "",
-  "repository": "git@github.com:gonzaliski/dwf-m6-chatroom-heroku.git",
-  "main": "index.js"
+  "repository": "git@github.com:gonzaliski/desafio-m6.git"
 }
