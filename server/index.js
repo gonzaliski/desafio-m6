@@ -20,7 +20,7 @@ app.post("/rooms", function (req, res) {
         currentGame: ""
     }).then(function () {
         var roomLongId = roomRef.key;
-        var roomId = nanoidShort(6);
+        var roomId = nanoidShort();
         roomCollection.doc(roomId.toString()).set({
             rtdbRoomId: roomLongId
         }).then(function () {
@@ -166,9 +166,8 @@ app.post("/auth", function (req, res) {
     });
 });
 app.get("*", function (req, res) {
-    res.sendFile(__dirname + "/dist/index.html");
+    res.sendFile(__dirname + "../dist/index.html");
 });
-app.user(express.static('dist'));
 app.listen(port, function () {
     console.log("Example app listening on port ".concat(port));
 });
