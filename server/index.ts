@@ -7,7 +7,7 @@ import * as express from "express"
 const port = process.env.PORT || 3000;
 var app = express();
 
-app.use(express.static("dist"))
+app.use(express.static("../dist"))
 app.use(express.json());
 app.use(cors());
 
