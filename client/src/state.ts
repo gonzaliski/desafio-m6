@@ -1,6 +1,6 @@
 import {rtdb} from "./rtdb"
 import {map} from "lodash"
-const API_BASE_URL = "https://dwf-m6-piedra-papel-tijeras.herokuapp.com/"
+const API_BASE_URL = "https://dwf-m6-piedra-papel-tijeras.herokuapp.com"
 // const API_BASE_URL = "http://localhost:3000"
 type Play = "piedra" | "papel" | "tijera";
 type Player = {
