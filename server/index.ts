@@ -179,7 +179,7 @@ app.post("/auth",(req,res)=>{
 }) 
 
 app.get("*", function(req,res){
-  res.sendFile(__dirname + "/dist/index.html");
+  res.sendFile(__dirname + "../dist/index.html");
 })
 
 app.listen(port, () => {
