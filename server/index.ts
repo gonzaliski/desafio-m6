@@ -144,7 +144,6 @@ app.get("/rooms/:roomId",(req,res)=>{
      roomCollection.doc(roomId).get()
      .then(snap=>{
        const data = snap.data();
-       (data.rtdbRoomId);
       res.json(data)
      })
     }else{
