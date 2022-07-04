@@ -23,7 +23,7 @@ app.post("/rooms",(req,res)=>{
         currentGame:""
       }).then(()=>{
         const roomLongId = roomRef.key;
-        const roomId = nanoidShort(6);
+        const roomId = nanoidShort();
         roomCollection.doc(roomId.toString()).set({
           rtdbRoomId:roomLongId
         }).then(()=>{
@@ -182,7 +182,6 @@ app.get("*", function(req,res){
   res.sendFile(__dirname + "/dist/index.html");
 })
 
-app.user(express.static('dist'))
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });

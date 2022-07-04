@@ -18,7 +18,6 @@ const state = {
     roomId:"",
     rtdbData:[],
     rtdbLongId:"",
-    oponentId:"",
     choice:"",
     online:false,
     ready:false,
@@ -26,12 +25,7 @@ const state = {
     hasDrawn:false,
     hasPlayed:false,
     wins:0,
-    play:{
-      myPlay:"",
-      oponentPlay:""
-    },
     oponent:{} as Player,
-    oponentWins:0
   },
   listeners:[],
   subscribe(callback: (any) => any) {
@@ -374,11 +368,8 @@ const state = {
   if (!this.isDraw() && won) {
       this.data.wins += 1;
       console.log("current wins",this.data.wins);
-    }else if(!won){
-      this.data.oponentWins = this.data.oponent.wins + 1
     }
     console.log("empate?", this.isDraw());
-    console.log("oponentWins", this.data.oponentWins);
     // state.data.hasPlayed = false
     this.updateScoreOnRoom()
    

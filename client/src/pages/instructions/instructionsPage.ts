@@ -43,7 +43,7 @@ customElements.define('instructions-page', class InstructionsPage extends HTMLEl
       }
       @media(max-width:420px){
         .title__container{
-          grid-template-rows: 110px 300px 1fr 1fr;
+          grid-template-rows: 150px 150px 1fr 100px;
         }
       }
       .title{
