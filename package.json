@@ -28,7 +28,7 @@
     "dev:dev": "concurrently \"yarn dev:front\" \"yarn dev:api\"",
     "dev": "ts-node ./server/dev.ts",
     "test": "ava",
-    "build:api": "tsc ./server/index.ts",
+    "build:api": "tsc index.ts",
     "dev:api": "ts-node ./server/index.ts",
     "build": "yarn build:front && yarn build:api",
     "start": "node index.js"
