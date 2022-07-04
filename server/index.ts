@@ -138,7 +138,6 @@ app.patch("/rooms/hasPlayed", (req,res)=>{
 app.get("/rooms/:roomId",(req,res)=>{
   const {userId} = req.query;
   const {roomId} = req.params;
-  ("roomId type:",roomId.type);
   
   userCollection.doc(userId).get().then(doc=>{
     if(doc.exists){
