@@ -6,7 +6,7 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
   }
   addListeners(){
     const formEl = this.querySelector("#form");
-    console.log(formEl);
+    (formEl);
     const buttonEl = this.querySelector("#send-button")
     buttonEl?.addEventListener("click",(e)=>{
       e.preventDefault();

@@ -18,15 +18,15 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     // })
     state.subscribe(()=>{
       const cs = state.getState()
-      console.log(state.data.oponent.online);
-      console.log(state.data.oponent.ready);
-      console.log(state.data.oponent.hasPlayed);
+      (state.data.oponent.online);
+      (state.data.oponent.ready);
+      (state.data.oponent.hasPlayed);
          if(cs.oponent.online &&
         (!cs.oponent.ready &&
         !cs.oponent.hasPlayed) && (cs.online &&
           (!cs.ready &&
           !cs.hasPlayed))){
-          console.log("cambiando a instructions");
+          ("cambiando a instructions");
           
           Router.go("/instructions")
         }

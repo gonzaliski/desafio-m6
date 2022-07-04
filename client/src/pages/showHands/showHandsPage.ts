@@ -13,9 +13,9 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
      this.render()
     }
     addListeners(){
-      console.log("en juego.",state.data.play);
-      console.log("yo jugue",this.playerHand, "y mi oponente:", this.oponentHand);
-      console.log(state.listeners);
+      ("en juego.",state.data.play);
+      ("yo jugue",this.playerHand, "y mi oponente:", this.oponentHand);
+      (state.listeners);
         const oponentHasPlayed = state.data.oponent.hasPlayed
         setTimeout(()=>{
           if(oponentHasPlayed && state.data.hasPlayed) {

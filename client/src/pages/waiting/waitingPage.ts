@@ -10,13 +10,13 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
   }
   addListeners(){
     if(state.data.oponent.ready){
-      console.log("oponent was already waiting");
+      ("oponent was already waiting");
       
       Router.go("/game")
     }
     state.subscribe(()=>{      
       if(state.data.oponent.ready && state.data.ready){
-        console.log("oponent is ready");
+        ("oponent is ready");
         Router.go("/game")
       }
      })

@@ -34,14 +34,13 @@ const state = {
  },
   // init() {
 	// 	const localData = JSON.parse(localStorage.getItem("data") || "");
-  //   console.log(localData);
+  //   (localData);
 	// 	if (localStorage.getItem("data")) {
 	// 		return (this.setState(localData));
 	// 	}
 	// },
   listenDatabase() {
     // Connection with RTDB
-    console.log("listening data base");
     
     const rtdbRef = rtdb.ref(`rooms/${this.data.rtdbLongId}`);
     // const rtdbRef = rtdb.ref(`rooms/${this.data.roomId}`);    
@@ -49,7 +48,6 @@ const state = {
       const cs = this.getState();
       const value = snapshot.val();
       cs.rtdbData = map(value.currentGame.gameData)
-      console.log(cs.rtdbData);
       this.saveOponentData(cs.rtdbData,cs)
         this.setState(cs);
     });
@@ -57,7 +55,6 @@ const state = {
   saveOponentData(data,cs){
     const oponentDataFilter = data.filter((p)=>{return p.name != this.data.name })
     const oponentData = oponentDataFilter[0] as Player;
-    console.log("oponent data",oponentData);
     if(oponentData != undefined){
       cs.oponent = oponentData
     }
@@ -77,7 +74,7 @@ const state = {
         })
         .then((data) => {
           cs.userId = data.id;
-          console.log(cs.userId);
+          (cs.userId);
           this.setState(cs);
           if(callback){
             callback();
@@ -116,7 +113,6 @@ const state = {
     const cs = this.getState()
     const listData = map(cs.rtdbData) as any;
     const playerData = listData.filter((p)=>{return p.name == this.data.name})[0]
-    console.log(playerData);
     
     cs.wins = playerData.wins
     cs.ready = false
@@ -149,7 +145,7 @@ const state = {
   },
   updateScoreOnRoom(){
     const cs = this.getState();
-    console.log(cs.wins);
+    (cs.wins);
     
     fetch(API_BASE_URL + "/rooms/wins",{
       method: "PATCH",
@@ -166,7 +162,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res);
+        (res);
       })
   },
   updateReadyOnRoom(){
@@ -186,7 +182,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res,"ready actualizado");
+        (res,"ready actualizado");
       })
   },
   updateChoiceOnRoom(){
@@ -206,7 +202,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res,"choice actualizado");
+        (res,"choice actualizado");
       })
   },
   updateConnection(){
@@ -226,7 +222,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res,"online status updated");
+        (res,"online status updated");
       })
   },
   updateStatusOnRoom(){
@@ -246,12 +242,12 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        console.log(res,"status actualizado");
+        (res,"status actualizado");
       })
   },
   setName(name:String){
     const cs = this.getState();
-    console.log(name);
+    (name);
     cs.name = name;
     this.setState(cs);
   },
@@ -272,7 +268,6 @@ const state = {
           return res.json();
         })
         .then((data) => {
-          console.log("line 33 ",data.id);
           cs.roomId = data.id;
           this.setState(cs);
           if (callback) {
@@ -286,7 +281,7 @@ const state = {
     this.setState(cs);
   },
   accessToRoom(callback?){
-    console.log("accessToRoom");
+    ("accessToRoom");
     const cs = this.getState();
     const roomId = cs.roomId;
     const userId = cs.userId;
@@ -296,8 +291,6 @@ const state = {
       })
       .then((data) => {
         cs.rtdbLongId = data.rtdbRoomId;
-        cs.online = true
-        console.log(cs.rtdbLongId);
         this.setState(cs);
         this.listenDatabase()
       //  this.listenRoom();
@@ -320,7 +313,7 @@ const state = {
       for (const cb of this.listeners) {
         cb();
       }
-      console.log("el state cambio");
+      ("el state cambio");
       
   },
 
@@ -341,14 +334,13 @@ const state = {
   },
   whoWins() {    
     const playerMove = this.data.choice;
-    console.log(playerMove);
+    (playerMove);
     const oponentMove = this.data.oponent.choice;
-    console.log(oponentMove);
+    (oponentMove);
     const ganeConTijera = playerMove == "tijera" && oponentMove == "papel";
     const ganeConPapel = playerMove == "papel" && oponentMove == "piedra";
     const ganeConPiedra = playerMove == "piedra" && oponentMove == "tijera";
     const gane = [ganeConPapel, ganeConPiedra, ganeConTijera].includes(true);
-    console.log("gane?",gane);
     
     this.saveHistory(gane);
   },
@@ -365,9 +357,7 @@ const state = {
     this.data.hasDrawn = this.isDraw()
   if (!this.isDraw() && won) {
       this.data.wins += 1;
-      console.log("current wins",this.data.wins);
     }
-    console.log("empate?", this.isDraw());
     // state.data.hasPlayed = false
     this.updateScoreOnRoom()
    

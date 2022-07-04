@@ -138,14 +138,14 @@ app.patch("/rooms/hasPlayed", (req,res)=>{
 app.get("/rooms/:roomId",(req,res)=>{
   const {userId} = req.query;
   const {roomId} = req.params;
-  console.log("roomId type:",roomId.type);
+  ("roomId type:",roomId.type);
   
   userCollection.doc(userId).get().then(doc=>{
     if(doc.exists){
      roomCollection.doc(roomId).get()
      .then(snap=>{
        const data = snap.data();
-       console.log(data.rtdbRoomId);
+       (data.rtdbRoomId);
       res.json(data)
      })
     }else{
@@ -187,5 +187,5 @@ app.get("*", function(req,res){
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  (`Example app listening on port ${port}`);
 });

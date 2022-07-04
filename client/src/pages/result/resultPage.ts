@@ -12,9 +12,9 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
     }
     addListeners(){      
       const buttonEl = this.querySelector(".play-again__button")
-      console.log(buttonEl);
+      (buttonEl);
    buttonEl.addEventListener("click", () => {
-    console.log("volviendo a jugar");
+    ("volviendo a jugar");
       state.resetPlay()
       setTimeout(()=>{
         Router.go("/instructions");
