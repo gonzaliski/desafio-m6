@@ -4,10 +4,12 @@ import { map} from 'lodash'
 import 'dotenv/config'
 import * as cors from "cors";
 import * as express from "express"
+import * as path from "path"
+
 const port = process.env.PORT || 3000;
 var app = express();
 
-app.use(express.static("../dist"))
+
 app.use(express.json());
 app.use(cors());
 
@@ -178,8 +180,10 @@ app.post("/auth",(req,res)=>{
   })
 }) 
 
+const relativeRoute = path.resolve(__dirname, "../dist");
+app.use(express.static(relativeRoute))
 app.get("*", function(req,res){
-  res.sendFile(__dirname + "../dist/index.html");
+  res.sendFile(relativeRoute + "/index.html");
 })
 
 app.listen(port, () => {
