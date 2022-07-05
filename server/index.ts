@@ -13,7 +13,7 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 
-const nanoidShort = customAlphabet('1234567890abcdefghi', 6)
+const nanoidShort = customAlphabet('1234567890abcdefghi', 4)
 
 const userCollection = firestore.collection("users")
 const roomCollection = firestore.collection("rooms")

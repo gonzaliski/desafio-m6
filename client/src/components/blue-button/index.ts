@@ -17,6 +17,7 @@ customElements.define('blue-button', class BlueButton extends HTMLElement {
                 font-size:45px;
                 font-family:'Odibee Sans';
                 color:white;
+                cursor: pointer;
             }
         `
         this.shadow.innerHTML = `

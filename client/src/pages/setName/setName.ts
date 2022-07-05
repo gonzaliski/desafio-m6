@@ -6,7 +6,6 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
   }
   addListeners(){
     const formEl = this.querySelector("#form");
-    (formEl);
     const buttonEl = this.querySelector("#send-button")
     buttonEl?.addEventListener("click",(e)=>{
       e.preventDefault();
@@ -38,11 +37,13 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
     <h1 class="title">Piedra
     Papel ó
     Tijera</h1>
+    <div>
     <form class="form" id="form">
     <h2 class="form-title">Tu nombre</h2>
     <input required class="name__input" name="name" maxlength="12" type="text"></input>
     <blue-button  type="submit" class="button-play" id="send-button" >Empezar</blue-button>
     </form>
+    </div>
     <play-options class="options"></play-options>
     `
     this.className = "title__container"
@@ -50,7 +51,7 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
     style.innerHTML=`
       .title__container{
           display:grid;
-          grid-template-rows: 300px 200px;
+          grid-template-rows: 300px 1fr 200px;
           align-items: center;
           justify-items:center;
           height:100vh;
@@ -77,28 +78,29 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
           transform: scale(0.8);
       }
     }
-      .options{
-        pointer-events:none;
-        margin-top:auto;
-      }
-      .form{
-          display:flex;
-          flex-direction:column;
-          gap:20px;
-          align-items:center;
-      }
-      .name__input{
-          width:322px;
-          height:50px;
-          border:solid 4px #182460;
-          border-radius:4px;
-      }
-      .form-title{
-          font-size:45px;
-      }
-      .button-play{
-        margin-top:5px;
-      }
+    .form{
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      align-items:center;
+    }
+    .name__input{
+      width:322px;
+      height:50px;
+      border:solid 4px #182460;
+      border-radius:4px;
+    }
+    .form-title{
+      font-size:45px;
+      margin:0;
+    }
+    .button-play{
+      margin-top:5px;
+    }
+    .options{
+      pointer-events:none;
+      margin-top:auto;
+    }
 
     `
     this.appendChild(style)
