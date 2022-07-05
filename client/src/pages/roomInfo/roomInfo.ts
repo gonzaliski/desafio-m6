@@ -18,9 +18,6 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
     // })
     state.subscribe(()=>{
       const cs = state.getState()
-      (state.data.oponent.online);
-      (state.data.oponent.ready);
-      (state.data.oponent.hasPlayed);
          if(cs.oponent.online &&
         (!cs.oponent.ready &&
         !cs.oponent.hasPlayed) && (cs.online &&
