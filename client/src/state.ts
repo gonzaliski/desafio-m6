@@ -32,13 +32,7 @@ const state = {
     // recibe callbacks para ser avisados posteriormente
     this.listeners.push(callback);
  },
-  // init() {
-	// 	const localData = JSON.parse(localStorage.getItem("data") || "");
-  //   (localData);
-	// 	if (localStorage.getItem("data")) {
-	// 		return (this.setState(localData));
-	// 	}
-	// },
+
   listenDatabase() {
     // Connection with RTDB
     
@@ -74,7 +68,6 @@ const state = {
         })
         .then((data) => {
           cs.userId = data.id;
-          (cs.userId);
           this.setState(cs);
           if(callback){
             callback();
@@ -145,7 +138,6 @@ const state = {
   },
   updateScoreOnRoom(){
     const cs = this.getState();
-    (cs.wins);
     
     fetch(API_BASE_URL + "/rooms/wins",{
       method: "PATCH",
@@ -162,7 +154,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        (res);
+        console.log(res, "score updated")
       })
   },
   updateReadyOnRoom(){
@@ -182,7 +174,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        (res,"ready actualizado");
+        console.log(res,"ready actualizado");
       })
   },
   updateChoiceOnRoom(){
@@ -202,7 +194,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        (res,"choice actualizado");
+        console.log(res,"choice actualizado");
       })
   },
   updateConnection(){
@@ -222,7 +214,7 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        (res,"online status updated");
+        console.log(res,"online status updated");
       })
   },
   updateStatusOnRoom(){
@@ -242,12 +234,11 @@ const state = {
     })
       .then((res)=>{
         this.setState(cs)
-        (res,"status actualizado");
+        console.log(res,"status actualizado");
       })
   },
   setName(name:String){
     const cs = this.getState();
-    (name);
     cs.name = name;
     this.setState(cs);
   },
@@ -332,9 +323,7 @@ const state = {
   },
   whoWins() {    
     const playerMove = this.data.choice;
-    (playerMove);
     const oponentMove = this.data.oponent.choice;
-    (oponentMove);
     const ganeConTijera = playerMove == "tijera" && oponentMove == "papel";
     const ganeConPapel = playerMove == "papel" && oponentMove == "piedra";
     const ganeConPiedra = playerMove == "piedra" && oponentMove == "tijera";
