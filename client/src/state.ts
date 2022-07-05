@@ -281,7 +281,6 @@ const state = {
     this.setState(cs);
   },
   accessToRoom(callback?){
-    ("accessToRoom");
     const cs = this.getState();
     const roomId = cs.roomId;
     const userId = cs.userId;
@@ -313,7 +312,6 @@ const state = {
       for (const cb of this.listeners) {
         cb();
       }
-      ("el state cambio");
       
   },
 

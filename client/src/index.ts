@@ -10,7 +10,6 @@ import { Router } from "@vaadin/router";
 })();
 
 window.addEventListener("beforeunload",()=>{
-      ("funciona??");
       if(state.data.roomId){
          state.data.hasPlayed = false
          state.data.online = false

@@ -10,10 +10,8 @@ customElements.define('game-page', class GamePage extends HTMLElement {
       state.subscribe(()=>{
         const oponentPlayed = state.data.oponent.hasPlayed
         const emptyOponentChoice = state.data.oponent.choice == ""
-        ("oponent jugó?", oponentPlayed);
           if(oponentPlayed && !emptyOponentChoice && state.data.choice &&
             (location.pathname == "/game")){
-            ("cambiando a showhands");
             Router.go("/showHands")
           }
       })

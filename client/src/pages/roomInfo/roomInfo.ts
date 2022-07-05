@@ -26,7 +26,6 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
         !cs.oponent.hasPlayed) && (cs.online &&
           (!cs.ready &&
           !cs.hasPlayed))){
-          ("cambiando a instructions");
           
           Router.go("/instructions")
         }

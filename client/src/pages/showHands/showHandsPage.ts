@@ -13,8 +13,6 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
      this.render()
     }
     addListeners(){
-      ("en juego.",state.data.play);
-      ("yo jugue",this.playerHand, "y mi oponente:", this.oponentHand);
       (state.listeners);
         const oponentHasPlayed = state.data.oponent.hasPlayed
         setTimeout(()=>{
