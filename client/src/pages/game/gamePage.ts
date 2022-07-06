@@ -41,6 +41,7 @@ customElements.define('game-page', class GamePage extends HTMLElement {
         }
       }
       .options{
+        cursor:pointer;
         margin-top:auto;
       }
     `
