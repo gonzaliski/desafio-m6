@@ -31,10 +31,10 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
     </div>
     <play-options class="options"></play-options>
     `;
-    this.className = "title_container"
+    this.className = "title__container"
     const style = document.createElement("style");
     style.innerHTML=`
-    .title_container{
+    .title__container{
         display:grid;
         grid-template-rows: 200px 1fr 300px;
           align-items:center;
@@ -43,6 +43,12 @@ customElements.define('waiting-page', class WaitingPage extends HTMLElement {
         height:100vh;
         position:relative;
         font-family:'Odibee Sans';
+    }
+
+    @media(max-height:600px){
+      .title__container{
+        height:-webkit-fill-available;
+      }
     }
 
     .options{

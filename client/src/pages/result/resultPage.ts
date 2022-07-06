@@ -27,7 +27,7 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
       <elemento-el elemento="${state.data.oponent.choice}" class="option-oponent"></elemento-el>
       <elemento-el elemento="${state.data.choice}" class="option-player"></elemento-el>
       </div>
-      <div class="container">
+      <div class="overlapping__container">
       <div class="result__container">
       <div class="star__container">
       <img src=${this.imageURL} class="star-img">
@@ -42,16 +42,20 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
       </div>
       <blue-button class="play-again__button">Volver a jugar</blue-button> 
       </div>
-      <div class="background-container"></div>
       </div>
+      <div class="background-container"></div>
           `;
       const style = document.createElement("style");
+      this.className = "container"
       style.innerHTML = `
           :root{
             --won-color: #888949E5;
             --loose-color: #894949;
           }
           .container{
+            position:relative;
+          }
+          .overlapping__container{
             height:100vh;
             position:relative;
             font-family:'Odibee Sans'
@@ -92,6 +96,12 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
       position:relative;
       
     }
+    @media(max-height:660px){
+      .star-imp{
+        transform:scale(0.8);
+      }
+    }
+    
     .result__container{
       position:absolute;
       z-index:9;
@@ -101,6 +111,16 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
       flex-direction:column;
       align-items:center;
       gap:20px;
+    }
+      @media(max-height:660px){
+        .result__container{
+          transform:scale(0.8);
+        }
+      }
+      @media(max-height:525px){
+        .result__container{
+          flex-direction:row;
+        }
       }
       .result-text{
         position:absolute;
@@ -127,6 +147,8 @@ customElements.define('result-page', class ResultPage extends HTMLElement {
         margin:0;
       }
       .background-container{
+        position: absolute;
+        top: 0;
         height:100vh;
         width:100%;
         background-color:var(${

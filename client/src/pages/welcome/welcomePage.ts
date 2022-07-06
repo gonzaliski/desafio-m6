@@ -44,6 +44,12 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
 
         }
       }
+      @media(max-height:600px){
+        .title__container{
+          height: -webkit-fill-available;
+        }
+      }
+ 
       .title{
         text-align:center;
         font-family:'Roboto';
@@ -59,6 +65,7 @@ customElements.define('welcome-page', class WelcomePage extends HTMLElement {
     .buttons__container{
       display:flex;
       flex-direction:column;
+      margin-bottom:10px;
       gap:20px;
     }
     @media(max-width:420px){

@@ -35,6 +35,11 @@ customElements.define('game-page', class GamePage extends HTMLElement {
           height:100vh;
           position:relative;
       }
+      @media(max-height:600px){
+        .title__container{
+          height:-webkit-fill-available;
+        }
+      }
       .options{
         margin-top:auto;
       }

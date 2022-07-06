@@ -34,15 +34,15 @@ customElements.define('show-hands-page', class ShowHandsPage extends HTMLElement
             --won-color: #888949E5;
             --loose-color: #894949;
           }
+        
           .hands__container{
-            background-color:transparent;
             height:100vh;
             width:100%;
             display:flex;
             flex-direction:column;
             align-items: center;
             justify-items:center;
-            position:absolute;
+            position:relative;
             overflow: hidden;
           }
           .option-player{

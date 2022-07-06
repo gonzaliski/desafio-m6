@@ -56,6 +56,16 @@ customElements.define('room-info-page', class RoomInfo extends HTMLElement {
           position:relative;
           font-family:'Odibee Sans';
       }
+      @media(max-width:420px){
+        .title__container{
+          grid-template-rows: 200px 1fr;
+        }
+      }
+      @media(max-height:600px){
+        .title_container{
+          height:-webkit-fill-available;
+        }
+      }
  
       .options{
         pointer-events:none;

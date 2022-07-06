@@ -44,6 +44,11 @@ customElements.define('cant-connect-page', class CantConnect extends HTMLElement
           grid-template-rows: 250px 50px 200px;
             }
           }
+          @media(max-height:600px){
+            .title__container{
+              height:-webkit-fill-available;
+            }
+          }
       .text__container{
         max-width:317px;
       }

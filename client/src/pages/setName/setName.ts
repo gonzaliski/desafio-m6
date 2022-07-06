@@ -63,6 +63,11 @@ customElements.define('set-name-page', class SetName extends HTMLElement {
           grid-template-rows: 250px 200px;
             }
           }
+          @media(max-height:600px){
+            .title__container{
+              height:-webkit-fill-available;
+            }
+          }
       .title{
         text-align:center;
         font-family:'Roboto';

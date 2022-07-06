@@ -35,7 +35,7 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
     style.innerHTML=`
       .title__container{
           display:grid;
-          grid-template-rows: 300px 200px;
+          grid-template-rows: 300px 2fr 200px;
           align-items: center;
           justify-items:center;
           height:100vh;
@@ -45,6 +45,11 @@ customElements.define('connect-room-page', class ConnectRoom extends HTMLElement
       @media(max-width:420px){
         .title__container{
           grid-template-rows: 250px 200px;
+            }
+          }
+          @media(max-height:600px){
+            .title__container{
+              height:-webkit-fill-available;
             }
           }
       .title{
