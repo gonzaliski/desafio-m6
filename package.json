@@ -31,7 +31,7 @@
     "build:api": "tsc ./server/index.ts",
     "dev:api": "ts-node ./server/index.ts",
     "build": "yarn build:front && yarn build:api",
-    "start": "node ./server/index.js"
+    "start": "node server/index.js"
   },
   "keywords": [],
   "author": "Gon <gon.mendez13@gmail.com>",

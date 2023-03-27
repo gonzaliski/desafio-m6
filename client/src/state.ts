@@ -1,6 +1,6 @@
 import { rtdb } from "./rtdb";
 import { map } from "lodash";
-const API_BASE_URL = "https://desafio-m6.vercel.app";
+const API_BASE_URL = "https://piedra-papel-tijera-gonzaliski.netlify.app";
 // const API_BASE_URL = "http://localhost:3000"
 type Play = "piedra" | "papel" | "tijera";
 type Player = {
